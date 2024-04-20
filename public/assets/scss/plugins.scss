@@ -1,0 +1,23 @@
+/*------------------------------------------------------------------
+[Plugins Stylesheet]
+
+Project        :   sash – Bootstrap 5  Admin & Dashboard Template
+Copyright      :   Spruko Technologies Private Limited 
+Author         :   Spruko
+Author URL     :   https://themeforest.net/user/spruko
+Support	       :   support@spruko.com
+License        :   Licensed under ThemeForest License
+
+-------------------------------------------------------------------*/
+/*
+--- perfect scrollbar
+--- select2.min
+--- sidebar
+*/
+
+@import "variables";
+/* ######## plugins-STYLES ######## */
+
+@import "plugins/perfect-scrollbar";
+@import "plugins/select2.min";
+@import "plugins/sidebar";
