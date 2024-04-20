@@ -3,8 +3,6 @@ const Sidebar = dynamic(() => import("../sidebar/sidebar"), { ssr: false });
 import dynamic from "next/dynamic";
 import Footer from "../footer/footer";
 import BacktoTop from "../backtotop/backtotop";
-import { Provider } from "react-redux";
-import store from "../../redux/store";
 import Rightside from "../rightside/rightside";
 
 const Header2 = dynamic(() => import("../header/header2"), { ssr: false });
