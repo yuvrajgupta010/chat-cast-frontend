@@ -9,7 +9,7 @@ const Landingpages = dynamic(
 const LandingPage = () => {
   return (
     <div>
-      <Seo title="Landingpage" />
+      <Seo title="Secure Chating and File Sharing Platform" />
       <Landingpages />
     </div>
   );

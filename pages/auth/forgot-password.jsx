@@ -7,7 +7,7 @@ import Image from "next/image";
 const ForgotPassword = () => {
   return (
     <div>
-      <Seo title="ForgotPassword" />
+      <Seo title="Forgot Password" />
 
       {/* <!-- CONTAINER OPEN --> */}
       <Col className="col-login mx-auto">
@@ -57,10 +57,7 @@ const ForgotPassword = () => {
             <div className="text-center mt-4">
               <p className="text-dark mb-0 mx-2">
                 Forgot It?
-                <Link
-                  className="text-primary ms-1"
-                  href={`/components/dashboard/dashboard`}
-                >
+                <Link className="text-primary ms-1" href={`/auth/login`}>
                   Send me Back
                 </Link>
               </p>

@@ -8,7 +8,7 @@ import Image from "next/image";
 const Register = () => {
   return (
     <div>
-      <Seo title="Register" />
+      <Seo title="Sign up" />
 
       {/* <!-- CONTAINER OPEN --> */}
       <Col className="col-login mx-auto mt-7">
@@ -59,10 +59,7 @@ const Register = () => {
             <label className="custom-control custom-checkbox mt-4">
               <input type="checkbox" className="custom-control-input" />
               <span className="custom-control-label">
-                Agree the{" "}
-                <Link href={`/components/pages/extension/terms/`}>
-                  terms and policy
-                </Link>
+                Agree the <span className="text-primary">terms and policy</span>
               </span>
             </label>
             <div className="container-login100-form-btn">
@@ -76,11 +73,8 @@ const Register = () => {
             <div className="text-center pt-3">
               <p className="text-dark mb-0">
                 Already have account?
-                <Link
-                  href={`/components/authentication/login`}
-                  className="text-primary ms-1"
-                >
-                  Sign In
+                <Link href={`/auth/login`} className="text-primary ms-1">
+                  Log in
                 </Link>
               </p>
             </div>
