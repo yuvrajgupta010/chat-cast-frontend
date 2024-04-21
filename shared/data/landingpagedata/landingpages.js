@@ -79,13 +79,13 @@ const Landingpages = (props) => {
                       {/* <!-- SEARCH --> */}
                       <div className="header-nav-right p-5">
                         <Link
-                          href={`/components/authentication/register/`}
+                          href={`/auth/login`}
                           className="btn ripple btn-min w-sm btn-outline-primary me-2"
                         >
                           Log in
                         </Link>
                         <Link
-                          href={`/components/authentication/login/`}
+                          href={`/auth/signup`}
                           className="btn ripple btn-min w-sm btn-primary me-2"
                         >
                           Sign up
@@ -175,13 +175,13 @@ const Landingpages = (props) => {
                         </ul>
                         <div className="header-nav-right d-md-flex d-none">
                           <Link
-                            href={`/login`}
+                            href={`/auth/login`}
                             className="btn ripple btn-min w-sm btn-primary me-2 my-auto d-xl-block d-block"
                           >
                             Log in
                           </Link>
                           <Link
-                            href={`/signup`}
+                            href={`/auth/signup`}
                             className="btn ripple btn-min w-sm btn-outline-primary me-2 my-auto  d-xl-block d-block"
                           >
                             Sign up
