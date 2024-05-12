@@ -39,7 +39,7 @@ const Register = () => {
               <input
                 className="input100 border-start-0 ms-0 form-control"
                 type="text"
-                placeholder="User name"
+                placeholder="Full name"
               />
             </div>
             <div
@@ -105,5 +105,6 @@ const Register = () => {
     </div>
   );
 };
+
 Register.layout = "Authenticationlayout";
 export default Register;

@@ -10,7 +10,6 @@ import {
   Navbar,
 } from "react-bootstrap";
 import { Testimonials } from "./datalandingpage";
-import NavbarCollapse from "react-bootstrap/esm/NavbarCollapse";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -45,6 +44,13 @@ const Landingpages = (props) => {
           <div className="hor-header header">
             <Container className="main-container">
               <div className="d-flex">
+                <span
+                  style={{ cursor: "pointer" }}
+                  aria-label="Hide Sidebar"
+                  className="app-sidebar__toggle"
+                  data-bs-toggle="sidebar"
+                  onClick={() => sidebarToggled()}
+                ></span>
                 <Link className="logo-horizontal " href={`/`}>
                   <Image
                     src={"/assets/images/brand/logo-white.png"}
@@ -72,7 +78,7 @@ const Landingpages = (props) => {
                     <i className="navbar-toggler-icon fe fe-more-vertical"></i>
                   </Navbar.Toggle>
                   <div className="responsive-navbar p-0" id="basic-navbar-nav">
-                    <NavbarCollapse
+                    <Navbar.Collapse
                       className=" bg-white px-0"
                       id="navbarSupportedContent-4"
                     >
@@ -91,7 +97,7 @@ const Landingpages = (props) => {
                           Sign up
                         </Link>
                       </div>
-                    </NavbarCollapse>
+                    </Navbar.Collapse>
                   </div>
                 </Navbar>
               </div>
@@ -173,16 +179,16 @@ const Landingpages = (props) => {
                             </Link>
                           </li>
                         </ul>
-                        <div className="header-nav-right d-md-flex d-none">
+                        <div className="header-nav-right d-lg-flex d-md-flex d-none">
                           <Link
                             href={`/auth/login`}
-                            className="btn ripple btn-min w-sm btn-primary me-2 my-auto d-xl-block d-block"
+                            className="btn ripple btn-min w-sm btn-primary me-2 my-auto d-md-none d-lg-block d-xl-block d-block"
                           >
                             Log in
                           </Link>
                           <Link
                             href={`/auth/signup`}
-                            className="btn ripple btn-min w-sm btn-outline-primary me-2 my-auto  d-xl-block d-block"
+                            className="btn ripple btn-min w-sm btn-outline-primary me-2 my-auto d-md-none d-lg-block d-xl-block d-block\"
                           >
                             Sign up
                           </Link>

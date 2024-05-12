@@ -41,7 +41,73 @@ const Login = () => {
               <div className="tab-menu-heading border-0">
                 <div className="tabs-menu1">
                   {/* <!-- Tabs --> */}
-                  <Tabs
+                  <div
+                    className="wrap-input100 validate-input input-group"
+                    data-bs-validate="Valid email is required: ex@abc.xyz"
+                  >
+                    <Link
+                      href="#!"
+                      className="input-group-text bg-white text-muted"
+                    >
+                      <i
+                        className="zmdi zmdi-email text-muted"
+                        aria-hidden="true"
+                      ></i>
+                    </Link>
+                    <input
+                      className="input100 border-start-0 form-control ms-0"
+                      type="email"
+                      placeholder="Email"
+                    />
+                  </div>
+                  <Password />
+                  <div className="text-end pt-4">
+                    <p className="mb-0 fs-13">
+                      <Link
+                        href={`/auth/forgot-password`}
+                        className="text-primary ms-1"
+                      >
+                        Forgot Password?
+                      </Link>
+                    </p>
+                  </div>
+                  <div className="container-login100-form-btn">
+                    <Link
+                      href={`/components/dashboard/dashboard/`}
+                      className="login100-form-btn btn-primary"
+                    >
+                      Login
+                    </Link>
+                  </div>
+                  <div className="text-center pt-3">
+                    <p className="text-dark mb-0 fs-13 mx-3">
+                      Not a member?
+                      <Link href={`/auth/signup`} className="text-primary ms-1">
+                        Sign up
+                      </Link>
+                    </p>
+                  </div>
+                  <label className="login-social-icon">
+                    <span>Login with Social</span>
+                  </label>
+                  <div className="d-flex justify-content-center">
+                    <Link href="#!">
+                      <div className="social-login me-4 text-center">
+                        <i className="fa fa-google"></i>
+                      </div>
+                    </Link>
+                    <Link href="#!">
+                      <div className="social-login me-4 text-center">
+                        <i className="fa fa-facebook"></i>
+                      </div>
+                    </Link>
+                    <Link href="#!">
+                      <div className="social-login text-center mb-5">
+                        <i className="fa fa-twitter"></i>
+                      </div>
+                    </Link>
+                  </div>
+                  {/* <Tabs
                     defaultActiveKey="Email"
                     id="uncontrolled-tab-example"
                     className="tab-content"
@@ -175,7 +241,7 @@ const Login = () => {
                         </div>
                       </div>
                     </Tab>
-                  </Tabs>
+                  </Tabs> */}
                 </div>
               </div>
             </div>
