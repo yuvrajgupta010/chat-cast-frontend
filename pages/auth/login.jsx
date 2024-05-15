@@ -91,21 +91,21 @@ const Login = () => {
                     <span>Login with Social</span>
                   </label>
                   <div className="d-flex justify-content-center">
-                    <Link href="#!">
-                      <div className="social-login me-4 text-center">
-                        <i className="fa fa-google"></i>
-                      </div>
-                    </Link>
-                    <Link href="#!">
-                      <div className="social-login me-4 text-center">
-                        <i className="fa fa-facebook"></i>
-                      </div>
-                    </Link>
-                    <Link href="#!">
-                      <div className="social-login text-center mb-5">
-                        <i className="fa fa-twitter"></i>
-                      </div>
-                    </Link>
+                    {/* <Link href="#!"> */}
+                    <div className="social-login me-4 text-center">
+                      <i className="fa fa-google"></i>
+                    </div>
+                    {/* </Link> */}
+                    {/* <Link href="#!"> */}
+                    <div className="social-login me-4 text-center">
+                      <i className="fa fa-facebook"></i>
+                    </div>
+                    {/* </Link> */}
+                    {/* <Link href="#!"> */}
+                    <div className="social-login text-center mb-5">
+                      <i className="fa fa-twitter"></i>
+                    </div>
+                    {/* </Link> */}
                   </div>
                   {/* <Tabs
                     defaultActiveKey="Email"

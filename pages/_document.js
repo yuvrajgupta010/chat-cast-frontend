@@ -13,7 +13,7 @@ export default function Document() {
         <link
           rel="manifest"
           href="/manifest.json"
-          crossorigin="use-credentials"
+          crossOrigin="use-credentials"
         ></link>
         <meta
           name="keywords"

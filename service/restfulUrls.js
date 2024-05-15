@@ -1,3 +1,6 @@
-export const BASE_URL = "https://localhost:8080";
+export const BASE_URL = "http://localhost:8080";
 
-export const RestfulUrls = {};
+export const RestfulUrls = {
+  SIGN_UP: "/auth/signup",
+  ACCOUNT_VERIFICATION: "/auth/account-verification",
+};
