@@ -15,36 +15,35 @@ const AuthContextProvider = (props) => {
 
   const router = useRouter();
 
-  useEffect(() => {
-    _authenticateOnRefresh();
-  }, [_authenticateOnRefresh]);
-
-  const _authenticate = (data) => {
-    const { userDetails, token } = data;
-    setUserDetails(userDetails);
-    setIsAuthenticated(true);
-
-    localStorage.setItem("userDetails", JSON.stringify(userDetails));
-    localStorage.setItem("token", JSON.stringify(token));
-  };
-
-  const _logout = () => {
-    localStorage.removeItem("userDetails");
-    localStorage.removeItem("token");
-    setUserDetails(null);
-    setIsAuthenticated(false);
-    router.push("/");
-  };
-
   const _authenticateOnRefresh = useCallback(() => {
     const userDetails = localStorage.getItem("userDetails");
 
     if (userDetails) {
       setUserDetails(JSON.parse(userDetails));
-      setUserDetails(true);
-      router.push("/chat");
+      setIsAuthenticated(true);
     }
-  }, [router]);
+  }, []);
+
+  useEffect(() => {
+    _authenticateOnRefresh();
+  }, [_authenticateOnRefresh]);
+
+  const _authenticate = (data) => {
+    const { userDetails, accessToken } = data;
+    setUserDetails(userDetails);
+    setIsAuthenticated(true);
+    console.log(data, "_authenicateid");
+    localStorage.setItem("userDetails", JSON.stringify(userDetails));
+    localStorage.setItem("accessToken", JSON.stringify(accessToken));
+  };
+
+  const _logout = () => {
+    localStorage.removeItem("userDetails");
+    localStorage.removeItem("accessToken");
+    setUserDetails(null);
+    setIsAuthenticated(false);
+    router.push("/");
+  };
 
   const updateUserDetailsToContext = (data = {}) => {
     const newUserDetails = { ...userDetails, ...data };

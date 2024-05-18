@@ -1,18 +1,62 @@
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
-import Link from "next/link";
-import { Form, Button, Col, Tabs, Tab } from "react-bootstrap";
-import { useState } from "react";
-import Seo from "@/shared/layout-components/seo/seo";
 import Image from "next/image";
-import { Password } from "@/shared/data/authenticatepage/data-authentication";
+import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { useFormik } from "formik";
+import { Col } from "react-bootstrap";
+
+import Seo from "@/shared/layout-components/seo/seo";
+import loginFormValidation from "@/helper/yup/login";
+import { loginUser } from "@/store/auth/login/action";
+import { AuthCTX } from "@/context/AuthCTX";
 
 const Login = () => {
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const { _authenticate } = useContext(AuthCTX);
+
+  const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
+    useFormik({
+      validationSchema: loginFormValidation,
+      initialValues: {
+        email: "",
+        password: "",
+      },
+      onSubmit: async (values) => {
+        setIsSubmitting(true);
+
+        try {
+          const response = await dispatch(loginUser(values)).unwrap();
+          if (response) {
+            if (response.status === 200) {
+              _authenticate({
+                userDetails: response?.data?.data?.user,
+                accessToken: response.data?.data?.jwtToken,
+              });
+              router.push("/chat");
+            } else {
+              throw new Error(response?.data?.message);
+            }
+          }
+        } catch (error) {
+          toast.error(error.message);
+        } finally {
+          setIsSubmitting(false);
+        }
+      },
+    });
+
   const Log = () => {
     let Rightside = document.querySelector(".mobile-num");
     Rightside.style.display = "none";
     let Rightsides = document.querySelector(".login-otp");
     Rightsides.style.display = "flex";
   };
+
+  const passwordShowHandler = () => setIsPasswordShown((prev) => !prev);
 
   return (
     <div>
@@ -34,8 +78,8 @@ const Login = () => {
       </Col>
       <div className="container-login100">
         <div className="wrap-login100 p-6">
-          <form className="login100-form validate-form">
-            <span className="login100-form-title pb-5"> Login</span>
+          <form className="login100-form validate-form" onSubmit={handleSubmit}>
+            <span className="login100-form-title pb-5">Login</span>
 
             <div className="panel panel-primary">
               <div className="tab-menu-heading border-0">
@@ -45,26 +89,58 @@ const Login = () => {
                     className="wrap-input100 validate-input input-group"
                     data-bs-validate="Valid email is required: ex@abc.xyz"
                   >
-                    <Link
-                      href="#!"
+                    <span
+                      style={{ cursor: "pointer" }}
                       className="input-group-text bg-white text-muted"
                     >
-                      <i
-                        className="zmdi zmdi-email text-muted"
-                        aria-hidden="true"
-                      ></i>
-                    </Link>
+                      <i className="zmdi zmdi-email" aria-hidden="true"></i>
+                    </span>
                     <input
-                      className="input100 border-start-0 form-control ms-0"
+                      className="input100 border-start-0 ms-0 form-control"
                       type="email"
                       placeholder="Email"
+                      name="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
                     />
                   </div>
-                  <Password />
+                  {errors.email && touched.email ? (
+                    <p className="text-danger">{errors.email}</p>
+                  ) : null}
+                  <div
+                    className="wrap-input100 validate-input input-group"
+                    data-bs-validate="Password have to be at least 8 characters long"
+                  >
+                    <span
+                      style={{ cursor: "pointer" }}
+                      className="input-group-text bg-white text-muted"
+                      onClick={passwordShowHandler}
+                    >
+                      <i
+                        className={`zmdi ${
+                          isPasswordShown ? "zmdi-eye" : "zmdi-eye-off"
+                        } text-muted`}
+                        aria-hidden="true"
+                      ></i>
+                    </span>
+                    <input
+                      className="input100 border-start-0 ms-0 form-control"
+                      type={isPasswordShown ? "text" : "password"}
+                      placeholder="Password"
+                      name="password"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                    />
+                  </div>
+                  {errors.password && touched.password ? (
+                    <p className="text-danger">{errors.password}</p>
+                  ) : null}
                   <div className="text-end pt-4">
                     <p className="mb-0 fs-13">
                       <Link
-                        href={`/auth/forgot-password`}
+                        href={`/auth/forget-password`}
                         className="text-primary ms-1"
                       >
                         Forgot Password?
@@ -72,12 +148,12 @@ const Login = () => {
                     </p>
                   </div>
                   <div className="container-login100-form-btn">
-                    <Link
-                      href={`/components/dashboard/dashboard/`}
-                      className="login100-form-btn btn-primary"
+                    <button
+                      type="submit"
+                      className="login100-form-btn btn btn-primary"
                     >
-                      Login
-                    </Link>
+                      {isSubmitting ? "Logging in..." : "Login"}
+                    </button>
                   </div>
                   <div className="text-center pt-3">
                     <p className="text-dark mb-0 fs-13 mx-3">

@@ -123,7 +123,7 @@ const Register = () => {
             ) : null}
             <div
               className="wrap-input100 validate-input input-group"
-              data-bs-validate="Valid email is required: ex@abc.xyz"
+              data-bs-validate="Password have to be at least 8 characters long"
             >
               <span
                 style={{ cursor: "pointer" }}

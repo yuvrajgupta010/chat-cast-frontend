@@ -5,31 +5,32 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { useFormik } from "formik";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Seo from "@/shared/layout-components/seo/seo";
-import verifyFormValidation from "@/helper/yup/verify";
 import ResendOtp from "@/components/UI/otpTimer";
-import {
-  resendVerificationOtp,
-  verifyAccount,
-} from "@/store/auth/verify/action";
 import { AuthCTX } from "@/context/AuthCTX";
+import verifyOtpFormValidation from "@/helper/yup/verify-otp";
+import {
+  getNewForgetOtp,
+  recoverAccount,
+} from "@/store/auth/forget-password/action";
 
 const VerifyOtp = () => {
   const [isOtpShown, setIsOtpShown] = useState(false);
+  const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
-  const signupStore = useSelector((store) => store.signup);
-  const { receivedData } = signupStore;
   const { _authenticate } = useContext(AuthCTX);
 
   const router = useRouter();
   const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
     useFormik({
-      validationSchema: verifyFormValidation,
+      validationSchema: verifyOtpFormValidation,
       initialValues: {
         otp: "",
+        newPassword: "",
+        confirmPassword: "",
       },
       onSubmit: async (values) => {
         setIsSubmitting(true);
@@ -38,26 +39,28 @@ const VerifyOtp = () => {
           if (!formatedOtp) {
             throw new Error("OTP must only be Numeric");
           }
-          const userEmail = localStorage.getItem("verificationEmail");
-          if (!userEmail) {
+          const forgetToken = localStorage.getItem("forgetToken");
+          if (!forgetToken) {
             // TODO: handle email on refresh
             throw new Error("Something went wrong!");
           }
 
           const data = {
-            email: userEmail,
+            forgetToken,
             otp: formatedOtp,
+            newPassword: values.newPassword,
+            confirmPassword: values.confirmPassword,
           };
 
-          const response = await dispatch(verifyAccount(data)).unwrap();
+          const response = await dispatch(recoverAccount(data)).unwrap();
           if (response) {
             if (response.status === 200) {
-              localStorage.removeItem("verificationEmail");
+              localStorage.removeItem("forgetToken");
               _authenticate({
                 userDetails: response?.data?.data?.user,
                 accessToken: response.data?.data?.jwtToken,
               });
-              router.push("/chat");
+              // router.push("/chat");
               // console.log(response, "Successfully verified");
               // TODO: Start profile logic here after setting up Context and local storage
               toast.success(response?.data?.message);
@@ -74,25 +77,26 @@ const VerifyOtp = () => {
     });
 
   useEffect(() => {
-    const haveVerificationEmail = localStorage.getItem("verificationEmail");
-    if (!haveVerificationEmail) {
+    const haveForgetToken = localStorage.getItem("forgetToken");
+    if (!haveForgetToken) {
       router.push("/");
     }
   }, [router]);
 
   const resendOTPHandler = useCallback(async () => {
     try {
-      const userEmail = localStorage.getItem("verificationEmail");
-      if (!userEmail) {
-        // TODO: handle email on refresh
+      const forgetToken = localStorage.getItem("forgetToken");
+      if (!forgetToken) {
+        // TODO: handle forgetToken on refresh
         router.push("/");
         throw new Error("Something went wrong!");
       }
       const response = await dispatch(
-        resendVerificationOtp({ email: userEmail })
+        getNewForgetOtp({ forgetToken })
       ).unwrap();
       if (response) {
         if (response.status === 201) {
+          localStorage.setItem("forgetToken", response.data.data.forgetToken);
           toast.success(response?.data?.message);
         } else {
           throw new Error(response?.data?.message);
@@ -104,10 +108,11 @@ const VerifyOtp = () => {
   }, [dispatch]);
 
   const otpShowHandler = () => setIsOtpShown((prev) => !prev);
+  const passwordShowHandler = () => setIsPasswordShown((prev) => !prev);
 
   return (
     <div>
-      <Seo title="Account Verification" />
+      <Seo title="Foget Password" />
 
       {/* <!-- CONTAINER OPEN --> */}
       <Col className="col-login mx-auto">
@@ -129,10 +134,10 @@ const VerifyOtp = () => {
       <div className="container-login100">
         <div className="wrap-login100 p-6">
           <form className="login100-form validate-form" onSubmit={handleSubmit}>
-            <span className="login100-form-title pb-5">Verify Account</span>
+            <span className="login100-form-title pb-5">Change Password</span>
             <p className="text-muted">
-              Enter the OTP send to your email address for account verification.
-              (OTP valid for 5 min)
+              Enter the OTP send to your email address (OTP valid for 5 min)
+              along with new password and confirm password.
             </p>
             <div
               className="wrap-input100 validate-input input-group"
@@ -163,6 +168,64 @@ const VerifyOtp = () => {
             </div>
             {errors.otp && touched.otp ? (
               <p className="text-danger">{errors.otp}</p>
+            ) : null}
+            <div
+              className="wrap-input100 validate-input input-group"
+              data-bs-validate="Password have to be at least 8 characters long"
+            >
+              <span
+                style={{ cursor: "pointer" }}
+                className="input-group-text bg-white text-muted"
+                onClick={passwordShowHandler}
+              >
+                <i
+                  className={`zmdi ${
+                    isPasswordShown ? "zmdi-eye" : "zmdi-eye-off"
+                  } text-muted`}
+                  aria-hidden="true"
+                ></i>
+              </span>
+              <input
+                className="input100 border-start-0 ms-0 form-control"
+                type={isPasswordShown ? "text" : "password"}
+                placeholder="New Password"
+                name="newPassword"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.password}
+              />
+            </div>
+            {errors.newPassword && touched.newPassword ? (
+              <p className="text-danger">{errors.password}</p>
+            ) : null}
+            <div
+              className="wrap-input100 validate-input input-group"
+              data-bs-validate="Password have to be at least 8 characters long"
+            >
+              <span
+                style={{ cursor: "pointer" }}
+                className="input-group-text bg-white text-muted"
+                onClick={passwordShowHandler}
+              >
+                <i
+                  className={`zmdi ${
+                    isPasswordShown ? "zmdi-eye" : "zmdi-eye-off"
+                  } text-muted`}
+                  aria-hidden="true"
+                ></i>
+              </span>
+              <input
+                className="input100 border-start-0 ms-0 form-control"
+                type={isPasswordShown ? "text" : "password"}
+                placeholder="Confirm Password"
+                name="confirmPassword"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.confirmPassword}
+              />
+            </div>
+            {errors.confirmPassword && touched.confirmPassword ? (
+              <p className="text-danger">{errors.password}</p>
             ) : null}
             <div className="submit">
               <button
