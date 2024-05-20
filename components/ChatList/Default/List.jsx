@@ -10,13 +10,16 @@ import {
   Tooltip,
 } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import MessageStatus from "../UI/MessageStatus";
+import MessageStatus from "../../UI/MessageStatus";
 
 const List = () => {
   return (
-    <div className="card mb-0">
-      <Card className="mb-0 br-0" style={{ flex: 1 }}>
-        <PerfectScrollbar>
+    <div
+      className="card mb-0 overflow-auto br-0"
+      style={{ flex: 1, boxShadow: "none" }}
+    >
+      <PerfectScrollbar>
+        <Card className="mb-0 br-0 h-100">
           <Card.Body className="pt-0">
             <Tab.Container id="left-tabs-example" defaultActiveKey="msg">
               <Nav variant="pills" className="px-0 pb-2">
@@ -39,9 +42,9 @@ const List = () => {
                   </Nav.Item>
                 </OverlayTrigger>
               </Nav>
-              <Tab.Content className=" main-chat-list flex-2">
+              <Tab.Content className="main-chat-list flex-2 h-auto">
                 <Tab.Pane eventKey="msg">
-                  <ul className="main-chat-list tab-pane">
+                  <ul className="main-chat-list tab-pane h-auto">
                     <li className="media selected new border-top-0 px-2">
                       <div className="main-img-user online">
                         <img
@@ -239,8 +242,9 @@ const List = () => {
               </Tab.Content>
             </Tab.Container>
           </Card.Body>
-        </PerfectScrollbar>
-      </Card>
+        </Card>
+      </PerfectScrollbar>
+      &nbsp;
     </div>
   );
 };

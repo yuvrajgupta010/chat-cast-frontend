@@ -1,10 +1,12 @@
-import ChatList from "@/components/chatList/ChatList";
+import ChatList from "@/components/ChatList/ChatList";
 import Link from "next/link";
 import React, { useEffect } from "react";
 import { Col, Dropdown, Row } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 import Seo from "@/shared/layout-components/seo/seo";
+import Empty from "@/components/Empty";
+import ChatBox from "@/components/Chat/ChatBox";
 
 const Chat = () => {
   const { currentChatUser } = useSelector((store) => store.chatApp);
@@ -39,11 +41,7 @@ const Chat = () => {
       >
         <ChatList />
 
-        {currentChatUser ? (
-          <div className="col-8 bg-red m-0 p-0">Messages</div>
-        ) : (
-          <div className="col-8 bg-red m-0 p-0">Empty</div>
-        )}
+        {!currentChatUser ? <ChatBox /> : <Empty />}
       </div>
     </>
   );

@@ -1,9 +1,9 @@
 import React from "react";
 import ChatListHeader from "./ChatListHeader";
-import SearchBar from "./SearchBar";
-import List from "./List";
-import AddNewContact from "./AddNewContact";
-import Profile from "./Profile";
+import SearchBar from "./Default/SearchBar";
+import List from "./Default/List";
+import AddNewContact from "./AddNewContact/AddNewContact";
+import Profile from "./Profile/Profile";
 import { Dropdown } from "react-bootstrap";
 import Link from "next/link";
 import AddNewGroup from "./AddNewGroup";
@@ -17,7 +17,7 @@ const ChatList = () => {
   const pageType = "default";
 
   return (
-    <div className="col-4 m-0 p-0 d-flex flex-column gap-0">
+    <div className="col-4 m-0 p-0 d-flex flex-column gap-0 h-100">
       <ChatListHeader />
       {chatListPageType === appConstants.DEFAULT_CHAT_LIST_PAGE ? (
         <>

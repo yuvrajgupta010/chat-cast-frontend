@@ -8,7 +8,10 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 const Profile = () => {
   return (
     <>
-      <Card className="br-0" style={{ boxShadow: "none", flex: 1 }}>
+      <Card
+        className="br-0 overflow-hidden p-0 m-0"
+        style={{ boxShadow: "none", flex: 1 }}
+      >
         <PerfectScrollbar>
           <Card.Body>
             <div className="text-center chat-image mb-5">
@@ -94,51 +97,57 @@ const Profile = () => {
             </Form.Group>
             <Accordion defaultActiveKey="0">
               <Accordion.Item eventKey="0">
-                <Accordion.Header>Collapsible Group Item #1</Accordion.Header>
+                <Accordion.Header>Update Password</Accordion.Header>
                 <Accordion.Body>
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life
-                  accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                  non cupidatat skateboard dolor brunch. Food truck quinoa
-                  nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
-                  aliqua put a bird on it squid single-origin coffee nulla
-                  assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
-                  beer labore wes anderson cred nesciunt sapiente ea proident.
-                  Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
-                  beer farm-to-table, raw denim aesthetic synth nesciunt you
-                  probably haven't heard of them accusamus labore sustainable
-                  VHS.
-                </Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item eventKey="1">
-                <Accordion.Header>Collapsible Group Item #2</Accordion.Header>
-                <Accordion.Body>
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life
-                  accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                  non cupidatat skateboard dolor brunch. Food truck quinoa
-                  nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
-                  aliqua put a bird on it squid single-origin coffee nulla
-                  assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
-                  beer labore wes anderson cred nesciunt sapiente ea proident.
-                  Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
-                  beer farm-to-table, raw denim aesthetic synth nesciunt you
-                  probably haven't heard of them accusamus labore sustainable
-                  VHS.
-                </Accordion.Body>
-              </Accordion.Item>
-              <Accordion.Item eventKey="2">
-                <Accordion.Header>Collapsible Group Item #3</Accordion.Header>
-                <Accordion.Body>
-                  Anim pariatur cliche reprehenderit, enim eiusmod high life
-                  accusamus terry richardson ad squid. 3 wolf moon officia aute,
-                  non cupidatat skateboard dolor brunch. Food truck quinoa
-                  nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt
-                  aliqua put a bird on it squid single-origin coffee nulla
-                  assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
-                  beer labore wes anderson cred nesciunt sapiente ea proident.
-                  Ad vegan excepteur butcher vice lomo. Leggings occaecat craft
-                  beer farm-to-table, raw denim aesthetic synth nesciunt you
-                  probably haven't heard of them accusamus labore sustainable
-                  VHS.
+                  <Current />
+                  <Form.Group>
+                    <Form.Label>New Password</Form.Label>
+                    <InputGroup
+                      className="wrap-input100 validate-input"
+                      id="Password-toggle1"
+                    >
+                      <Link
+                        href="#!"
+                        className="input-group-text bg-white text-muted"
+                      >
+                        <i
+                          className="zmdi zmdi-eye text-muted"
+                          aria-hidden="true"
+                        ></i>
+                      </Link>
+                      <Form.Control
+                        className="input100"
+                        type="password"
+                        placeholder="New Password"
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                  <Form.Group>
+                    <Form.Label>Confirm Password</Form.Label>
+                    <InputGroup
+                      className="wrap-input100 validate-input"
+                      id="Password-toggle2"
+                    >
+                      <Link
+                        href="#!"
+                        className="input-group-text bg-white text-muted"
+                      >
+                        <i
+                          className="zmdi zmdi-eye text-muted"
+                          aria-hidden="true"
+                        ></i>
+                      </Link>
+                      <Form.Control
+                        className="input100"
+                        type="password"
+                        placeholder="Confirm Password"
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                  <div className="text-end">
+                    <button className="btn btn-primary me-2">Update</button>
+                    <button className="btn btn-danger ">Cancel</button>
+                  </div>
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
