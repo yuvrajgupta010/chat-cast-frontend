@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useContext } from "react";
 import { useRouter } from "next/router";
 
 export const AuthCTX = React.createContext({
@@ -66,4 +66,5 @@ const AuthContextProvider = (props) => {
   );
 };
 
+export const useAuthCtx = () => useContext(AuthCTX);
 export default AuthContextProvider;

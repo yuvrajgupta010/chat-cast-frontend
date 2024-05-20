@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,14 +9,14 @@ import { Col } from "react-bootstrap";
 import Seo from "@/shared/layout-components/seo/seo";
 import loginFormValidation from "@/helper/yup/login";
 import { loginUser } from "@/store/auth/login/action";
-import { AuthCTX } from "@/context/AuthCTX";
+import { AuthCTX, useAuthCtx } from "@/context/AuthCTX";
 
 const Login = () => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
   const router = useRouter();
-  const { _authenticate } = useContext(AuthCTX);
+  const { _authenticate } = useAuthCtx();
 
   const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
     useFormik({

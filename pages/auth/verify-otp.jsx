@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { Col } from "react-bootstrap";
 import Image from "next/image";
@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 
 import Seo from "@/shared/layout-components/seo/seo";
 import ResendOtp from "@/components/UI/otpTimer";
-import { AuthCTX } from "@/context/AuthCTX";
+import { useAuthCtx } from "@/context/AuthCTX";
 import verifyOtpFormValidation from "@/helper/yup/verify-otp";
 import {
   getNewForgetOtp,
@@ -21,7 +21,7 @@ const VerifyOtp = () => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const dispatch = useDispatch();
-  const { _authenticate } = useContext(AuthCTX);
+  const { _authenticate } = useAuthCtx();
 
   const router = useRouter();
   const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
@@ -105,7 +105,7 @@ const VerifyOtp = () => {
     } catch (error) {
       toast.error(error.message);
     }
-  }, [dispatch]);
+  }, [dispatch, router]);
 
   const otpShowHandler = () => setIsOtpShown((prev) => !prev);
   const passwordShowHandler = () => setIsPasswordShown((prev) => !prev);

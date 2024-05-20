@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useEffect } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { Col } from "react-bootstrap";
 import Image from "next/image";
@@ -14,7 +14,7 @@ import {
   resendVerificationOtp,
   verifyAccount,
 } from "@/store/auth/verify/action";
-import { AuthCTX } from "@/context/AuthCTX";
+import { useAuthCtx } from "@/context/AuthCTX";
 
 const VerifyOtp = () => {
   const [isOtpShown, setIsOtpShown] = useState(false);
@@ -22,7 +22,7 @@ const VerifyOtp = () => {
   const dispatch = useDispatch();
   const signupStore = useSelector((store) => store.signup);
   const { receivedData } = signupStore;
-  const { _authenticate } = useContext(AuthCTX);
+  const { _authenticate } = useAuthCtx();
 
   const router = useRouter();
   const { handleChange, handleBlur, handleSubmit, values, errors, touched } =
@@ -101,7 +101,7 @@ const VerifyOtp = () => {
     } catch (error) {
       toast.error(error.message);
     }
-  }, [dispatch]);
+  }, [dispatch, router]);
 
   const otpShowHandler = () => setIsOtpShown((prev) => !prev);
 

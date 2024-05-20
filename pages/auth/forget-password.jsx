@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { Col } from "react-bootstrap";
 import Seo from "@/shared/layout-components/seo/seo";
