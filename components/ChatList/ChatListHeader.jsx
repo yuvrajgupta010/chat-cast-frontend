@@ -127,6 +127,9 @@ const ChatListHeader = () => {
                         Profile
                       </Dropdown.Item>
                     ) : null}
+                    <Dropdown.Item href="#/action-1">
+                      Purchase Plan
+                    </Dropdown.Item>
 
                     <Dropdown.Item href="#/action-1">Logout</Dropdown.Item>
                   </Dropdown.Menu>

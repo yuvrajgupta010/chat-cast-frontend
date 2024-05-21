@@ -16,13 +16,21 @@ const Profile = () => {
           <Card.Body>
             <div className="text-center chat-image mb-5">
               <div className="avatar avatar-xxl chat-profile mb-3 brround">
-                <Link className="" href={`/components/pages/profile/`}>
-                  <img
-                    alt="avatar"
-                    src={"../../../assets/images/users/7.jpg"}
-                    className="brround"
-                  />
-                </Link>
+                <img
+                  alt="avatar"
+                  src={"../../../assets/images/users/7.jpg"}
+                  className="brround"
+                />
+                <span
+                  style={{
+                    cursor: "pointer",
+                    position: "absolute",
+                    bottom: "5px",
+                    right: "-14px",
+                  }}
+                >
+                  <i className="fe fe-edit-3 text-primary mx-2"></i>
+                </span>
               </div>
             </div>
             <Form.Group>
