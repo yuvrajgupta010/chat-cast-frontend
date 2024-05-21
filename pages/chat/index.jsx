@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import Seo from "@/shared/layout-components/seo/seo";
 import Empty from "@/components/Empty";
 import ChatBox from "@/components/Chat/ChatBox";
+import PurchasePlan from "@/components/PurchasePlan/PurchasePlan";
 
 const Chat = () => {
   const { currentChatUser } = useSelector((store) => store.chatApp);
@@ -40,8 +41,8 @@ const Chat = () => {
         style={{ height: "100vh", minWidth: "1000px" }}
       >
         <ChatList />
-
-        {!currentChatUser ? <ChatBox /> : <Empty />}
+        <PurchasePlan />
+        {/* {!currentChatUser ? <ChatBox /> : <Empty />} */}
       </div>
     </>
   );

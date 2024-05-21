@@ -17,7 +17,7 @@ const ChatList = () => {
   const pageType = "default";
 
   return (
-    <div className="col-4 m-0 p-0 d-flex flex-column gap-0 h-100">
+    <div className="col-4 m-0 p-0 d-flex flex-column gap-0 h-100 border-end">
       <ChatListHeader />
       {chatListPageType === appConstants.DEFAULT_CHAT_LIST_PAGE ? (
         <>
