@@ -15,24 +15,24 @@ const AuthContextProvider = (props) => {
 
   const router = useRouter();
 
-  const _authenticateOnRefresh = useCallback(() => {
+  const _authenticateOnRefresh = () => {
     const userDetails = localStorage.getItem("userDetails");
 
     if (userDetails) {
       setUserDetails(JSON.parse(userDetails));
       setIsAuthenticated(true);
+      router.push("/chat");
     }
-  }, []);
+  };
 
   useEffect(() => {
     _authenticateOnRefresh();
-  }, [_authenticateOnRefresh]);
+  }, []);
 
   const _authenticate = (data) => {
     const { userDetails, accessToken } = data;
     setUserDetails(userDetails);
     setIsAuthenticated(true);
-    console.log(data, "_authenicateid");
     localStorage.setItem("userDetails", JSON.stringify(userDetails));
     localStorage.setItem("accessToken", JSON.stringify(accessToken));
   };

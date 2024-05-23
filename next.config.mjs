@@ -6,10 +6,16 @@ const nextConfig = {
   swcMinify: true,
   basePath: "",
   assetPrefix: "",
-  // images: {
-  //   loader: 'akamai',
-  //   path: ''
-  // }
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "chat-cast.s3.ap-south-1.amazonaws.com",
+        port: "",
+        // pathname: "/account123/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

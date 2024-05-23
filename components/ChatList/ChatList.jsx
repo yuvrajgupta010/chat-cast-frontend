@@ -1,13 +1,12 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import ChatListHeader from "./ChatListHeader";
 import SearchBar from "./Default/SearchBar";
 import List from "./Default/List";
 import AddNewContact from "./AddNewContact/AddNewContact";
 import Profile from "./Profile/Profile";
-import { Dropdown } from "react-bootstrap";
-import Link from "next/link";
 import AddNewGroup from "./AddNewGroup";
-import { useDispatch, useSelector } from "react-redux";
 import appConstants from "@/helper/constant";
 
 const ChatList = () => {

@@ -8,8 +8,11 @@ import MessageIcon from "@mui/icons-material/Message";
 import Link from "next/link";
 import appConstants from "@/helper/constant";
 import { changeChatListPageTypeAction } from "@/store/chatApp/reducer";
+import { useAuthCtx } from "@/context/AuthCTX";
+import Image from "next/image";
 
 const ChatListHeader = () => {
+  const { userDetails } = useAuthCtx();
   const dispatch = useDispatch();
   const { chatListPageType } = useSelector((store) => store.chatApp);
 
@@ -22,16 +25,31 @@ const ChatListHeader = () => {
       <Card.Header>
         <div className="container-fluid main-container px-0">
           <div className="d-flex justify-content-between align-items-center">
-            <span
+            <div
               onClick={changeChatListPageHandler.bind(
                 null,
                 appConstants.PROFILE_CHAT_LIST_PAGE
               )}
               style={{ cursor: "pointer" }}
-              className="avatar avatar-lg brround bg-info"
+              className="avatar avatar-lg brround cover-image bg-transparent"
             >
-              Y.G
-            </span>
+              <Image
+                // width={50}
+                // height={50}
+                fill
+                className="brround cover-image"
+                alt={
+                  userDetails?.profile?.profileImageURL
+                    ? `Your photo as ${userDetails?.profile?.fullName}`
+                    : "Blank profile avatar"
+                }
+                src={
+                  `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${userDetails?.profile?.profileImageURL}` ??
+                  "/assets/images/png/blank-profile-avatar.png"
+                }
+              />
+            </div>
+
             <nav className="d-flex gap-4 text-primary fs-5">
               {chatListPageType !== appConstants.DEFAULT_CHAT_LIST_PAGE ? (
                 <OverlayTrigger

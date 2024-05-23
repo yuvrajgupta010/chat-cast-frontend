@@ -5,4 +5,5 @@ export const RestfulUrls = {
   ACCOUNT_VERIFICATION: "/auth/account-verification",
   LOGIN: "/auth/login",
   FORGOT_PASSWORD: "/auth/forget-password",
+  PROFILE_UPDATE: "/user/profile",
 };
