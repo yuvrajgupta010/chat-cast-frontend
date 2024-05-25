@@ -1,16 +1,15 @@
 import * as yup from "yup";
 
-const verifyOtpFormValidation = yup.object().shape({
-  otp: yup
+const changePasswordVaildation = yup.object().shape({
+  currentPassword: yup
     .string()
     .trim()
-    .min(6, "Please provide valid OTP")
-    .max(6, "Please provide valid OTP")
-    .required("Please enter your OTP"),
+    .required("Current password is required")
+    .min(8, "Invalid password"),
   newPassword: yup
     .string()
     .trim()
-    .required("Password must be at least 8 characters long")
+    .required("New password is required")
     .min(8, "Password must be at least 8 characters long"),
   confirmPassword: yup
     .string()
@@ -22,4 +21,4 @@ const verifyOtpFormValidation = yup.object().shape({
     .required("Confirm Password is required"),
 });
 
-export default verifyOtpFormValidation;
+export default changePasswordVaildation;

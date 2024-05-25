@@ -7,6 +7,7 @@ const PasswordField = ({
   name,
   placeholder = "Password",
   changeHandler = (e) => {},
+  blurHandler = (e) => {},
   value = "",
 }) => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
@@ -39,6 +40,7 @@ const PasswordField = ({
           type={isPasswordShown ? "text" : "password"}
           placeholder={placeholder}
           onChange={changeHandler}
+          onBlur={blurHandler}
           value={value}
         />
       </InputGroup>

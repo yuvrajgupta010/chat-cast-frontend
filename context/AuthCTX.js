@@ -37,12 +37,11 @@ const AuthContextProvider = (props) => {
     localStorage.setItem("accessToken", JSON.stringify(accessToken));
   };
 
-  const _logout = () => {
-    localStorage.removeItem("userDetails");
-    localStorage.removeItem("accessToken");
+  const _logout = async () => {
+    await router.push("/");
+    localStorage.clear();
     setUserDetails(null);
     setIsAuthenticated(false);
-    router.push("/");
   };
 
   const updateUserDetailsToContext = (data = {}) => {

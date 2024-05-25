@@ -18,7 +18,13 @@ const Chat = () => {
   useEffect(() => {
     document
       .querySelector("body")
-      .classList.add("app", "sidebar-mini", "ltr", "light-mode");
+      .classList.add(
+        "app",
+        "sidebar-mini",
+        "ltr",
+        "light-mode",
+        "overflow-hidden"
+      );
     document
       .querySelector("body")
       .classList.remove("login-img", "landing-page", "horizontal");
@@ -40,6 +46,7 @@ const Chat = () => {
         setIsValidated(true);
       }, 1000);
     } else {
+      localStorage.clear();
       router.push("/");
     }
 

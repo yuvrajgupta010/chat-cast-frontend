@@ -10,9 +10,10 @@ import appConstants from "@/helper/constant";
 import { changeChatListPageTypeAction } from "@/store/chatApp/reducer";
 import { useAuthCtx } from "@/context/AuthCTX";
 import Image from "next/image";
+//TODO: reset funtion for all redux reset
 
 const ChatListHeader = () => {
-  const { userDetails } = useAuthCtx();
+  const { userDetails, _logout } = useAuthCtx();
   const dispatch = useDispatch();
   const { chatListPageType } = useSelector((store) => store.chatApp);
 
@@ -34,8 +35,6 @@ const ChatListHeader = () => {
               className="avatar avatar-lg brround cover-image bg-transparent"
             >
               <Image
-                // width={50}
-                // height={50}
                 fill
                 className="brround cover-image"
                 alt={
@@ -44,8 +43,9 @@ const ChatListHeader = () => {
                     : "Blank profile avatar"
                 }
                 src={
-                  `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${userDetails?.profile?.profileImageURL}` ??
-                  "/assets/images/png/blank-profile-avatar.png"
+                  userDetails?.profile?.profileImageURL
+                    ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${userDetails?.profile?.profileImageURL}`
+                    : "/assets/images/png/blank-profile-avatar.png"
                 }
               />
             </div>
@@ -136,7 +136,8 @@ const ChatListHeader = () => {
                     {chatListPageType !==
                     appConstants.PROFILE_CHAT_LIST_PAGE ? (
                       <Dropdown.Item
-                        className=""
+                        as={"p"}
+                        className="px-5 py-2 mb-0"
                         onClick={changeChatListPageHandler.bind(
                           null,
                           appConstants.PROFILE_CHAT_LIST_PAGE
@@ -145,11 +146,17 @@ const ChatListHeader = () => {
                         Profile
                       </Dropdown.Item>
                     ) : null}
-                    <Dropdown.Item href="#/action-1">
+                    <Dropdown.Item as={"p"} className="px-5 py-2 mb-0">
                       Purchase Plan
                     </Dropdown.Item>
 
-                    <Dropdown.Item href="#/action-1">Logout</Dropdown.Item>
+                    <Dropdown.Item
+                      as={"p"}
+                      className="px-5 py-2 mb-0"
+                      onClick={_logout}
+                    >
+                      Logout
+                    </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </span>

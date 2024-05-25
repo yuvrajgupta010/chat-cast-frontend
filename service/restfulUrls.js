@@ -6,4 +6,6 @@ export const RestfulUrls = {
   LOGIN: "/auth/login",
   FORGOT_PASSWORD: "/auth/forget-password",
   PROFILE_UPDATE: "/user/profile",
+  GET_PROFILE_UPLOAD_URL: "/user/profile/picture",
+  SEARCH_USERS: "/user/get-users",
 };
