@@ -8,4 +8,7 @@ export const RestfulUrls = {
   PROFILE_UPDATE: "/user/profile",
   GET_PROFILE_UPLOAD_URL: "/user/profile/picture",
   SEARCH_USERS: "/user/get-users",
+  GET_USER_CHAT_LIST: "/chat/chat-list",
+  SEND_MESSAGE: "/chat/send-message",
+  UPDATE_MESSAGE_STATUS: "/chat/update-message-status",
 };

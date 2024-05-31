@@ -16,18 +16,24 @@ const AuthContextProvider = (props) => {
   const router = useRouter();
 
   const _authenticateOnRefresh = () => {
+    const token = localStorage.getItem("accessToken");
     const userDetails = localStorage.getItem("userDetails");
 
-    if (userDetails) {
+    if (token && userDetails) {
       setUserDetails(JSON.parse(userDetails));
       setIsAuthenticated(true);
       router.push("/chat");
+    } else {
+      localStorage.clear();
+      router.push("/");
+      return;
     }
   };
 
   useEffect(() => {
+    if (!router.isReady) return;
     _authenticateOnRefresh();
-  }, []);
+  }, [router.isReady]);
 
   const _authenticate = (data) => {
     const { userDetails, accessToken } = data;

@@ -2,13 +2,17 @@ import React, { useEffect, useState } from "react";
 import SearchBar from "../Default/SearchBar";
 import { Card, Spinner } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { searchUsers } from "@/store/user/action";
 import Image from "next/image";
 import appConstants from "@/helper/constant";
+import { currentChatUserAction } from "@/store/chatApp/reducer";
 
 const AddNewContact = () => {
   const dispatch = useDispatch();
+  const {
+    chatListOfUser: { chatList, deletedChatList },
+  } = useSelector((store) => store.chatApp);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchContacts, setSearchContacts] = useState([]);
   const [searchingContacts, setSearchingContacts] = useState(false);
@@ -39,6 +43,31 @@ const AddNewContact = () => {
     setSearchQuery(query);
   };
 
+  const handleAddContact = (contact) => {
+    let findResult = chatList.find((chat) => chat?.user?._id === contact._id);
+    if (!findResult) {
+      findResult = deletedChatList.find(
+        (chat) => chat?.user?.id === contact._id
+      );
+    }
+    if (findResult) {
+      dispatch(currentChatUserAction(findResult));
+    } else {
+      dispatch(
+        currentChatUserAction({
+          currentChatUser: {
+            chatState: "new",
+            isReceiverOnline: undefined,
+            user: {
+              ...contact,
+              id: contact._id,
+            },
+          },
+        })
+      );
+    }
+  };
+
   return (
     <div
       className="card mb-0 overflow-auto br-0"
@@ -67,7 +96,11 @@ const AddNewContact = () => {
               <ul className="main-chat-list tab-pane h-auto">
                 {searchContacts.map((contact) => {
                   return (
-                    <li className="media new border-0 px-2" key={contact._id}>
+                    <li
+                      className="media new border-0 px-2"
+                      key={contact._id}
+                      onClick={handleAddContact.bind(null, contact)}
+                    >
                       <div className="main-img-user online">
                         <Image
                           // width={50}
@@ -111,6 +144,7 @@ const AddNewContact = () => {
                 No relevent user found with this email and name.
               </p>
               <button className="btn btn-outline-primary">
+                {/* TODO: Add share functionality to user app on social media */}
                 Let&apos;s Invite +
               </button>
             </div>

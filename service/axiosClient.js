@@ -49,7 +49,7 @@ class Interceptor {
     const createInstance = axios.create({
       baseURL: BASE_URL,
       headers,
-      // withCredentials: true,
+      withCredentials: true,
     });
 
     createInstance.interceptors.request.use(injectToken, (error) =>

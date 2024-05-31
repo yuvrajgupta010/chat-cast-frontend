@@ -5,247 +5,184 @@ import {
   Card,
   Nav,
   OverlayTrigger,
+  Spinner,
   Tab,
   Tabs,
   Tooltip,
 } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import MessageStatus from "../../UI/MessageStatus";
+import SearchBar from "./SearchBar";
+import { useDispatch, useSelector } from "react-redux";
+import Image from "next/image";
+import appConstants from "@/helper/constant";
+import { useAuthCtx } from "@/context/AuthCTX";
+import { currentChatUserAction } from "@/store/chatApp/reducer";
 
 const List = () => {
+  const dispatch = useDispatch();
+  const {
+    currentChatUser,
+    chatListOfUser: { chatList },
+    loader: { isChatListLoading },
+    socket,
+  } = useSelector((store) => store.chatApp);
+
+  const { userDetails } = useAuthCtx();
+
+  const selectChatHandler = (chat) => {
+    dispatch(currentChatUserAction({ currentChatUser: chat }));
+  };
+
   return (
-    <div
-      className="card mb-0 overflow-auto br-0"
-      style={{ flex: 1, boxShadow: "none" }}
-    >
-      <PerfectScrollbar>
-        <Card className="mb-0 br-0 h-100">
-          <Card.Body className="pt-0">
-            <Tab.Container id="left-tabs-example" defaultActiveKey="msg">
-              <Nav variant="pills" className="px-0 pb-2">
-                <Nav.Item>
-                  <Nav.Link eventKey="msg">Messages</Nav.Link>
-                </Nav.Item>
-                {/* <Nav.Item>
+    <>
+      <SearchBar />
+      <div
+        className="card mb-0 overflow-auto br-0"
+        style={{ flex: 1, boxShadow: "none" }}
+      >
+        {!isChatListLoading ? (
+          <PerfectScrollbar>
+            <Card className="mb-0 br-0 h-100">
+              <Card.Body className="pt-0">
+                <Tab.Container id="left-tabs-example" defaultActiveKey="msg">
+                  <Nav variant="pills" className="px-0 pb-2">
+                    <Nav.Item>
+                      <Nav.Link eventKey="msg">Messages</Nav.Link>
+                    </Nav.Item>
+                    {/* <Nav.Item>
                 <Nav.Link eventKey="grp">Groups</Nav.Link>
               </Nav.Item> */}
-                <OverlayTrigger
-                  placement="bottom"
-                  overlay={
-                    <Tooltip>Purchase Plan to enable group chat</Tooltip>
-                  }
-                >
-                  <Nav.Item>
-                    <Nav.Link disabled eventKey="grp">
-                      Groups
-                    </Nav.Link>
-                  </Nav.Item>
-                </OverlayTrigger>
-              </Nav>
-              <Tab.Content className="main-chat-list flex-2 h-auto">
-                <Tab.Pane eventKey="msg">
-                  <ul className="main-chat-list tab-pane h-auto">
-                    <li className="media selected new border-top-0 px-2">
-                      <div className="main-img-user online">
-                        <img
-                          alt="user5"
-                          src={"../../../assets/images/users/5.jpg"}
-                        />
-                        <span>3</span>
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Raymart Santiago</span> <span>10 min</span>
-                        </div>
-                        <p className="d-flex align-items-center gap-1">
-                          <MessageStatus />
-                          <span>
-                            Hey! there
-                            {` I'm`} available{" "}
-                          </span>
+                    <OverlayTrigger
+                      placement="bottom"
+                      overlay={
+                        <Tooltip>Purchase Plan to enable group chat</Tooltip>
+                      }
+                    >
+                      <Nav.Item>
+                        <Nav.Link disabled eventKey="grp">
+                          Groups
+                        </Nav.Link>
+                      </Nav.Item>
+                    </OverlayTrigger>
+                  </Nav>
+                  <Tab.Content className="main-chat-list flex-2 h-auto">
+                    <Tab.Pane eventKey="msg">
+                      {chatList.length ? (
+                        <ul className="main-chat-list tab-pane h-auto">
+                          {chatList.map((chat) => {
+                            return (
+                              <li
+                                className={`media ${
+                                  chat._id === currentChatUser?._id
+                                    ? "selected"
+                                    : ""
+                                } new border-top-0 px-2`}
+                                key={chat._id}
+                                onClick={selectChatHandler.bind(null, chat)}
+                              >
+                                {/* <div className="main-img-user online">
+                              <img
+                                alt="user5"
+                                src={"../../../assets/images/users/5.jpg"}
+                              />
+                              <span>3</span>
+                            </div> */}
+                                <div className="avatar avatar-md brround cover-image">
+                                  <Image
+                                    // width={50}
+                                    // height={50}
+                                    fill
+                                    className="brround cover-image"
+                                    alt={
+                                      chat?.user?.profile?.fullName
+                                        ? `Profile picture of ${chat?.user?.profile?.fullName}`
+                                        : "Blank profile avatar"
+                                    }
+                                    src={
+                                      chat?.user?.profile?.profileImageURL
+                                        ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${chat?.user?.profile?.profileImageURL}`
+                                        : "/assets/images/png/blank-profile-avatar.png"
+                                    }
+                                  />
+                                  {chat.totalUnreadMessages ? (
+                                    <span className="badge rounded-pill avatar-badges bg-primary fs-10">
+                                      {chat?.totalUnreadMessages}
+                                    </span>
+                                  ) : null}
+                                  <span
+                                    className={`avatar-status bg-${
+                                      chat?.isReceiverOnline ? "green" : "red"
+                                    }`}
+                                  ></span>
+                                </div>
+                                <div className="media-body">
+                                  <div className="media-contact-name">
+                                    <span>{chat?.user?.profile?.fullName}</span>{" "}
+                                    {/* <span>10 min</span> */}
+                                    <span className="">&nbsp;</span>
+                                  </div>
+                                  <p className="d-flex align-items-center gap-1">
+                                    {chat?.lastMessage?.sender ===
+                                    userDetails?.id ? (
+                                      <>
+                                        <MessageStatus
+                                          messageStatus={
+                                            chat?.lastMessage?.messageStatus
+                                          }
+                                        />
+                                        <span>
+                                          {chat?.lastMessage?.messageType !==
+                                          "text" ? (
+                                            <i className="fe fe-paperclip text-black-50 me-1"></i>
+                                          ) : null}
+                                          {chat?.lastMessage?.messageContent}
+                                        </span>
+                                      </>
+                                    ) : (
+                                      <span>
+                                        {chat?.lastMessage?.messageContent}
+                                      </span>
+                                    )}
+                                  </p>
+                                </div>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      ) : (
+                        <p className="mt-2 text-primary fs-6 text-center">
+                          Start new chat
                         </p>
-                      </div>
-                    </li>
-                    <li className="media new new-addition">
-                      <div className="main-img-user">
-                        <img
-                          alt="user6"
-                          src={"../../../assets/images/users/6.jpg"}
-                        />{" "}
-                        <span>3</span>
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Ariana Monino</span> <span>30 min</span>
-                        </div>
-                        <p>Good Morning</p>
-                      </div>
-                    </li>
-                    <li className="media selected">
-                      <div className="main-img-user online">
-                        <img
-                          alt="user9"
-                          src={"../../../assets/images/users/9.jpg"}
-                        />
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Reynante Labares</span> <span>9.40 am</span>
-                        </div>
-                        <p> Nice to meet you </p>
-                      </div>
-                    </li>
-                    <li className="media new">
-                      <span className="avatar avatar-md brround bg-danger-transparent text-danger">
-                        J
-                      </span>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Joyce Chua</span> <span>11.20 am</span>
-                        </div>
-                        <p> Hi, How are you? </p>
-                      </div>
-                    </li>
-                    <li className="media new">
-                      <div className="main-img-user">
-                        <img
-                          alt="user4"
-                          src={"../../../assets/images/users/4.jpg"}
-                        />
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Rolando Paloso</span> <span>1.38 pm</span>
-                        </div>
-                        <p> Hey! there {`I'm `}available </p>
-                      </div>
-                    </li>
-                    <li className="media new">
-                      <div className="main-img-user">
-                        <div className="avatar avatar-md brround bg-primary-transparent text-primary">
-                          D
-                        </div>
-                        <span>1</span>
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Dexter dela Cruz</span> <span>4.08 pm</span>
-                        </div>
-                        <p>Typing...</p>
-                      </div>
-                    </li>
-                    <li className="media new">
-                      <div className="main-img-user">
-                        <img
-                          alt="user21"
-                          src={"../../../assets/images/users/21.jpg"}
-                        />
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Maricel Villalon</span> <span>8.09 pm</span>
-                        </div>
-                        <p> Hey! there {`I'm `}available </p>
-                      </div>
-                    </li>
-                    <li className="media new">
-                      <span className="avatar avatar-md brround bg-success-transparent text-success">
-                        M
-                      </span>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Maryjane Pechon</span> <span>1 day ago</span>
-                        </div>
-                        <p>I have some work</p>
-                      </div>
-                    </li>
-                    <li className="media new">
-                      <div className="main-img-user">
-                        <img
-                          alt="user5"
-                          src={"../../../assets/images/users/5.jpg"}
-                        />
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Lovely Dela Cruz</span> <span>3 days ago</span>
-                        </div>
-                        <p>I have some work</p>
-                      </div>
-                    </li>
-                    <li className="media new">
-                      <div className="avatar avatar-md brround bg-secondary-transparent">
-                        <i className="fe fe-user text-secondary"></i>
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Daniel Padilla</span> <span>5 days ago</span>
-                        </div>
-                        <p>I have some work</p>
-                      </div>
-                    </li>
-                    <li className="media new">
-                      <div className="main-img-user">
-                        <img
-                          alt="user3"
-                          src={"../../../assets/images/users/3.jpg"}
-                        />
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>John Pratts</span> <span>20/06/2021</span>
-                        </div>
-                        <p>I have some work</p>
-                      </div>
-                    </li>
-                    <li className="media new">
-                      <div className="main-img-user">
-                        <img
-                          alt="user7"
-                          src={"../../../assets/images/users/7.jpg"}
-                        />
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Socrates Itumay</span> <span>18/07/2021</span>
-                        </div>
-                        <p> Hey! there {`I'm `}available </p>
-                      </div>
-                    </li>
-                    <li className="media new border-bottom-0">
-                      <div className="main-img-user">
-                        <img
-                          alt="user6"
-                          src={"../../../assets/images/users/6.jpg"}
-                        />
-                      </div>
-                      <div className="media-body">
-                        <div className="media-contact-name">
-                          <span>Samuel Lerin</span> <span>29/07/2021</span>
-                        </div>
-                        <p> Hey! there {`I'm `}available </p>
-                      </div>
-                    </li>
-                  </ul>
+                      )}
 
-                  {/* <!-- main-chat-list --> */}
-                </Tab.Pane>
-                <Tab.Pane eventKey="grp">
-                  <div className="tab-content main-chat-list flex-2 ">
-                    <div className="text-center p-5">
-                      <button className="btn btn-outline-primary">
-                        Comming Soon...
-                      </button>
-                    </div>
-                  </div>
-                </Tab.Pane>
-              </Tab.Content>
-            </Tab.Container>
-          </Card.Body>
-        </Card>
-      </PerfectScrollbar>
-      &nbsp;
-    </div>
+                      {/* <!-- main-chat-list --> */}
+                    </Tab.Pane>
+                    <Tab.Pane eventKey="grp">
+                      <div className="tab-content main-chat-list flex-2 ">
+                        <div className="text-center p-5">
+                          <button className="btn btn-outline-primary">
+                            Comming Soon...
+                          </button>
+                        </div>
+                      </div>
+                    </Tab.Pane>
+                  </Tab.Content>
+                </Tab.Container>
+              </Card.Body>
+            </Card>
+          </PerfectScrollbar>
+        ) : (
+          <div className="d-flex justify-content-center">
+            <Spinner
+              animation="border"
+              variant="primary"
+              className="me-2 h-7 w-7"
+            />
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ChatListHeader from "./ChatListHeader";
@@ -11,7 +11,19 @@ import appConstants from "@/helper/constant";
 
 const ChatList = () => {
   const dispatch = useDispatch();
-  const { chatListPageType } = useSelector((store) => store.chatApp);
+  const {
+    chatListPageType,
+    socket,
+    chatListOfUser: { chatList },
+  } = useSelector((store) => store.chatApp);
+  const [onceRoomJoined, setOnceRoomJoined] = useState(false);
+
+  useEffect(() => {
+    if (socket?.connected) {
+      const roomIds = chatList.map((chat) => chat.user.id);
+      socket.emit("join-rooms-and-show-online", { rooms: roomIds });
+    }
+  }, [chatList.length, onceRoomJoined, socket]);
 
   const pageType = "default";
 
@@ -19,10 +31,7 @@ const ChatList = () => {
     <div className="col-4 m-0 p-0 d-flex flex-column gap-0 h-100 border-end">
       <ChatListHeader />
       {chatListPageType === appConstants.DEFAULT_CHAT_LIST_PAGE ? (
-        <>
-          <SearchBar />
-          <List />
-        </>
+        <List />
       ) : null}
       {chatListPageType === appConstants.ADD_CONTACT_CHAT_LIST_PAGE ? (
         <AddNewContact />

@@ -249,6 +249,7 @@ const Landingpages = (props) => {
                       alt="Girl chating on phone with smile on her face"
                       width={500}
                       height={500}
+                      className="w-auto h-auto"
                     />
                   </Col>
                 </Row>
