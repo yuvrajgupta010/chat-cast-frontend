@@ -1,20 +1,19 @@
-import Link from "next/link";
 import React from "react";
 import {
-  Button,
   Card,
   Nav,
   OverlayTrigger,
   Spinner,
   Tab,
-  Tabs,
   Tooltip,
 } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
+import { useDispatch, useSelector } from "react-redux";
+import dayjs from "dayjs";
+import Image from "next/image";
+
 import MessageStatus from "../../UI/MessageStatus";
 import SearchBar from "./SearchBar";
-import { useDispatch, useSelector } from "react-redux";
-import Image from "next/image";
 import appConstants from "@/helper/constant";
 import { useAuthCtx } from "@/context/AuthCTX";
 import { currentChatAction } from "@/store/chatApp/reducer";
@@ -28,6 +27,8 @@ const List = () => {
     loader: { isChatListLoading },
     socket,
   } = useSelector((store) => store.chatApp);
+
+  const { chatRoomId, isTyping } = useSelector((store) => store.chatRoom);
 
   const { userDetails } = useAuthCtx();
 
@@ -132,15 +133,25 @@ const List = () => {
                                     {/* <span>10 min</span> */}
                                     <span className="">&nbsp;</span>
                                   </div>
-                                  <p className="d-flex align-items-center gap-1">
-                                    {chat?.lastMessage?.sender ===
-                                    userDetails?.id ? (
-                                      <>
-                                        <MessageStatus
-                                          messageStatus={
-                                            chat?.lastMessage?.messageStatus
-                                          }
-                                        />
+                                  <div className="d-flex align-items-center justify-content-between">
+                                    <p className="d-flex align-items-center gap-1">
+                                      {chat?.lastMessage?.sender ===
+                                      userDetails?.id ? (
+                                        <>
+                                          <MessageStatus
+                                            messageStatus={
+                                              chat?.lastMessage?.messageStatus
+                                            }
+                                          />
+                                          <span>
+                                            {chat?.lastMessage?.messageType !==
+                                            "text" ? (
+                                              <i className="fe fe-paperclip text-black-50 me-1"></i>
+                                            ) : null}
+                                            {chat?.lastMessage?.messageContent}
+                                          </span>
+                                        </>
+                                      ) : (
                                         <span>
                                           {chat?.lastMessage?.messageType !==
                                           "text" ? (
@@ -148,13 +159,14 @@ const List = () => {
                                           ) : null}
                                           {chat?.lastMessage?.messageContent}
                                         </span>
-                                      </>
-                                    ) : (
-                                      <span>
-                                        {chat?.lastMessage?.messageContent}
-                                      </span>
-                                    )}
-                                  </p>
+                                      )}
+                                    </p>
+                                    <p>
+                                      {dayjs(
+                                        chat?.lastMessage?.createdAt
+                                      ).format("hh:mm A")}
+                                    </p>
+                                  </div>
                                 </div>
                               </li>
                             );

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { useFormik } from "formik";
 import { Col } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 import Seo from "@/shared/layout-components/seo/seo";
 import loginFormValidation from "@/helper/yup/login";
@@ -30,19 +31,15 @@ const Login = () => {
 
         try {
           const response = await dispatch(loginUser(values)).unwrap();
-          if (response) {
-            if (response.status === 200) {
-              _authenticate({
-                userDetails: response?.data?.data?.user,
-                accessToken: response.data?.data?.jwtToken,
-              });
-              router.push("/chat");
-            } else {
-              throw new Error(response?.data?.message);
-            }
+          if (response.status === 200) {
+            _authenticate({
+              userDetails: response?.data?.data?.user,
+              accessToken: response.data?.data?.jwtToken,
+            });
+            router.push("/chat");
           }
         } catch (error) {
-          toast.error(error.message);
+          toast.error(error.data.message);
         } finally {
           setIsSubmitting(false);
         }

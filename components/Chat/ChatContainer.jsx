@@ -1,19 +1,22 @@
 import React, { useEffect, useRef } from "react";
 import { Card } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import style from "./Chatcontainer.module.css";
 import Link from "next/link";
-import MessageStatus from "../UI/MessageStatus";
-import { useSelector } from "react-redux";
-import { useAuthCtx } from "@/context/AuthCTX";
 import Image from "next/image";
 import dayjs from "dayjs";
+import { useDispatch, useSelector } from "react-redux";
+
+import style from "./Chatcontainer.module.css";
+import MessageStatus from "../UI/MessageStatus";
+import { useAuthCtx } from "@/context/AuthCTX";
 import appConstants from "@/helper/constant";
+import { getDownloadFileUrl } from "@/store/chat/action";
 
 const ChatContainer = (props) => {
   const { messages, isTyping } = props;
   const { currentChat, socket } = useSelector((state) => state.chatApp);
   const { userDetails } = useAuthCtx();
+  const dispatch = useDispatch();
 
   const scrollRef = useRef(null);
 
@@ -25,7 +28,62 @@ const ChatContainer = (props) => {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages.length, currentChat._id]);
+  }, [messages.length, currentChat._id, isTyping]);
+
+  // const downloadFile = async (s3Key) => {
+  //   try {
+  //     const response = await dispatch(
+  //       getDownloadFileUrl({ s3_key: s3Key })
+  //     ).unwrap();
+  //     const signedURL = response?.data?.data?.presignedURL;
+
+  //     const link = document.createElement("a");
+  //     link.href = signedURL;
+  //     link.target = "_blank"; // Open link in new tab
+  //     link.rel = "noopener noreferrer"; // Security measure to prevent window.opener attacks
+
+  //     // link.download = fileName; // Optional: only if you want to specify a filename
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const downloadFile = async (s3Key) => {
+    try {
+      const response = await dispatch(
+        getDownloadFileUrl({ s3_key: s3Key })
+      ).unwrap();
+      const signedURL = response?.data?.data?.presignedURL;
+
+      // Fetch the file using the signed URL
+      const fileResponse = await fetch(signedURL, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/octet-stream",
+        },
+      });
+
+      // Check if the fetch request was successful
+      if (!fileResponse.ok) {
+        throw new Error(`Error fetching file: ${fileResponse.statusText}`);
+      }
+
+      const blob = await fileResponse.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = s3Key.split("/").pop(); // Use the file's key as the filename
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url); // Clean up the URL object
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div
@@ -49,8 +107,23 @@ const ChatContainer = (props) => {
                       key={message?._id}
                     >
                       <div className={`${style["msg-bubble"]}  bg-white`}>
-                        <div className={`${style["msg-text"]}`}>
-                          {message?.messageContent}
+                        <div
+                          className={`${style["msg-text"]} d-flex justify-content-between gap-3`}
+                        >
+                          <span className="text-wrap">
+                            {message?.messageContent}
+                          </span>
+                          {message.messageType !== "text" ? (
+                            <span
+                              style={{ cursor: "pointer" }}
+                              onClick={downloadFile.bind(
+                                null,
+                                message.filePath
+                              )}
+                            >
+                              <i className="bi bi-download"></i>
+                            </span>
+                          ) : null}
                         </div>
                         <div
                           className={`${style["msg-info"]} m-0 mt-3 justify-content-end gap-2 align-items-center`}
@@ -58,7 +131,6 @@ const ChatContainer = (props) => {
                           <MessageStatus
                             messageStatus={message.messageStatus}
                           />
-
                           <div className={`${style["msg-info-time"]}`}>
                             {dayjs(message?.createdAt).format("hh:mm A")}
                           </div>
@@ -93,8 +165,23 @@ const ChatContainer = (props) => {
                         <div className={`${style["msg-dummy-img"]}`}></div>
                       )}
                       <div className={`${style["msg-bubble"]}`}>
-                        <div className={`${style["msg-text"]}`}>
-                          {message.messageContent}
+                        <div
+                          className={`${style["msg-text"]} d-flex justify-content-between gap-3`}
+                        >
+                          <span className="text-wrap">
+                            {message?.messageContent}
+                          </span>
+                          {message.messageType !== "text" ? (
+                            <span
+                              style={{ cursor: "pointer" }}
+                              onClick={downloadFile.bind(
+                                null,
+                                message.filePath
+                              )}
+                            >
+                              <i className="bi bi-download"></i>
+                            </span>
+                          ) : null}
                         </div>
                         <div
                           className={`${style["msg-info"]} m-0 mt-3 justify-content-end gap-2 align-items-center`}
@@ -109,6 +196,32 @@ const ChatContainer = (props) => {
                   );
                 }
               })}
+              {isTyping ? (
+                <div className={`${style["typingIndicatorContainer"]} mb-`}>
+                  {/* <div className={`${style["msg-dummy-img"]}`}></div> */}
+                  <div className={`${style["msg-img"]}`}>
+                    <Image
+                      fill
+                      className="brround cover-image"
+                      alt={
+                        currentChat?.receiver?.profile?.profileImageURL
+                          ? `Profile photo of ${currentChat?.receiver?.profile?.fullName}`
+                          : "Blank profile avatar"
+                      }
+                      src={
+                        currentChat?.receiver?.profile?.profileImageURL
+                          ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${currentChat?.receiver?.profile?.profileImageURL}`
+                          : "/assets/images/png/blank-profile-avatar.png"
+                      }
+                    />
+                  </div>
+                  <div className={style["typingIndicatorBubble"]}>
+                    <div className={style["typingIndicatorBubbleDot"]}></div>
+                    <div className={style["typingIndicatorBubbleDot"]}></div>
+                    <div className={style["typingIndicatorBubbleDot"]}></div>
+                  </div>
+                </div>
+              ) : null}
             </main>
             <div ref={scrollRef} />
           </PerfectScrollbar>

@@ -3,16 +3,16 @@ import { Accordion, Card, Form, Spinner } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import Image from "next/image";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { useFormik } from "formik";
+import axios from "axios";
 
 import PasswordField from "@/components/UI/PasswordField";
 import { useAuthCtx } from "@/context/AuthCTX";
 import appConstants from "@/helper/constant";
-import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
 import { getProfilePictureUploadUrl, profileUpdate } from "@/store/user/action";
-import { useFormik } from "formik";
 import changePasswordVaildation from "@/helper/yup/profile";
-import axios from "axios";
 
 const Profile = () => {
   const dispatch = useDispatch();

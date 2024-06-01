@@ -137,3 +137,70 @@
 .msger-send-btn:hover {
   background: rgb(0, 180, 50);
 }
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.header {
+  font-weight: 600;
+  color: rosybrown;
+}
+
+.typingIndicatorContainer {
+  display: flex;
+  flex: none;
+  align-items: flex-end;
+  margin: 0;
+}
+
+.typingIndicatorBubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 40px;
+  margin: 0px 8px;
+  background-color: #579ffb;
+  border-radius: 12px;
+}
+
+.typingIndicatorBubbleDot {
+  width: 4px;
+  height: 4px;
+  margin-right: 4px;
+  background-color: #fff;
+  border-radius: 50%;
+  animation-name: bounce;
+  animation-duration: 1.3s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.typingIndicatorBubbleDot:first-of-type {
+  margin: 0px 4px;
+}
+
+.typingIndicatorBubbleDot:nth-of-type(2) {
+  animation-delay: 0.15s;
+}
+
+.typingIndicatorBubbleDot:nth-of-type(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes bounce {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+  }
+  30% {
+    transform: translateY(-4px);
+  }
+}

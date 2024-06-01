@@ -14,9 +14,8 @@ export const forgetPassword = createAsyncThunk(
       const response = await postForgetPasswordService(data);
       return response;
     } catch (error) {
-      // rejectWithValue(error);
       console.error(actionTypes.FORGET_PASSWORD, error);
-      return error;
+      return rejectWithValue(error);
     }
   }
 );

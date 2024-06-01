@@ -30,9 +30,24 @@ export const getChatMessagesService = async (data) => {
     .get(
       `${RestfulUrls.GET_CHAT_MESSAGES}/${data.chatId}?offset=${
         data.offset ?? 1
-      }&limit=${data.limit ?? 12}`,
-      data.data
+      }&limit=${data.limit ?? 12}`
     )
+    .then((res) => {
+      return res;
+    });
+};
+
+export const getUploadFileUrlService = async (data) => {
+  return await apiInterceptor
+    .post(`${RestfulUrls.GET_UPLOAD_FILE_URL}`, data)
+    .then((res) => {
+      return res;
+    });
+};
+
+export const getDownloadFileUrlService = async (data) => {
+  return await apiInterceptor
+    .post(`${RestfulUrls.GET_DOWNLOAD_FILE_URL}`, data)
     .then((res) => {
       return res;
     });

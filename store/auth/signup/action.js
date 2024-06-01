@@ -10,9 +10,8 @@ export const createAccount = createAsyncThunk(
       const response = await postSignupService(data);
       return response;
     } catch (error) {
-      // rejectWithValue(error);
       console.error(actionTypes.CREATE_ACCOUNT, error);
-      return error;
+      return rejectWithValue(error);
     }
   }
 );

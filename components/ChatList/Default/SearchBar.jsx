@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Card, FormControl, InputGroup } from "react-bootstrap";
+import { Card, FormControl, InputGroup } from "react-bootstrap";
 
 const SearchBar = ({
   placeholder = "Search...",

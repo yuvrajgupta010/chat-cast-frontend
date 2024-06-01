@@ -1,25 +1,25 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+
 import ChatHeader from "./ChatHeader";
 import ChatContainer from "./ChatContainer";
 import MessageBar from "./MessageBar";
-
-import { useDispatch, useSelector } from "react-redux";
 import { postUpdateMessageStatus, sendMessage } from "@/store/chatApp/action";
-import { toast } from "react-toastify";
 import {
   currentChatAction,
   makeUsersOnlineOffline,
   updateChatListAction,
 } from "@/store/chatApp/reducer";
-import { useAuthCtx } from "@/context/AuthCTX";
 import {
   addMessageInRoomAction,
   selectChatRoomAndUserAction,
 } from "@/store/chat/reducer";
 import { getChatMessages } from "@/store/chat/action";
+import { useAuthCtx } from "@/context/AuthCTX";
 
 const ChatBox = () => {
-  const { chatRoomMessages } = useSelector((store) => store.chatRoom);
+  const { chatRoomMessages, isTyping } = useSelector((store) => store.chatRoom);
   const { userDetails } = useAuthCtx();
   const { currentChat, socket } = useSelector((state) => state.chatApp);
 
@@ -209,7 +209,7 @@ const ChatBox = () => {
   return (
     <div className="col-8 m-0 p-0 d-flex flex-column gap-0 h-100 text-dark border-start">
       <ChatHeader headerData={currentChat} />
-      <ChatContainer messages={chatRoomMessages} />
+      <ChatContainer messages={chatRoomMessages} isTyping={isTyping} />
       <MessageBar
         ref={messageBarRef}
         sendMessage={sendNewMessage}

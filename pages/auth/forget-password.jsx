@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { Col } from "react-bootstrap";
-import Seo from "@/shared/layout-components/seo/seo";
 import Image from "next/image";
+import { Col } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { useFormik } from "formik";
 import { useRouter } from "next/router";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
 
+import Seo from "@/shared/layout-components/seo/seo";
 import forgetFormValidation from "@/helper/yup/forget-password";
 import { forgetPassword } from "@/store/auth/forget-password/action";
-import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,18 +27,14 @@ const ForgotPassword = () => {
 
         try {
           const response = await dispatch(forgetPassword(values)).unwrap();
-          if (response) {
-            if (response.status === 201) {
-              const forgetToken = response?.data?.data?.forgetToken;
-              localStorage.setItem("forgetToken", forgetToken);
-              router.push("/auth/verify-otp");
-              toast.success(response?.data?.message);
-            } else {
-              throw new Error(response?.data?.message);
-            }
+          if (response.status === 201) {
+            const forgetToken = response?.data?.data?.forgetToken;
+            localStorage.setItem("forgetToken", forgetToken);
+            router.push("/auth/verify-otp");
+            toast.success(response?.data?.message);
           }
         } catch (error) {
-          toast.error(error.message);
+          toast.error(error.data.message);
         } finally {
           setIsSubmitting(false);
         }

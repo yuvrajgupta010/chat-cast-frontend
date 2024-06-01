@@ -5,16 +5,15 @@ import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MessageIcon from "@mui/icons-material/Message";
-import Link from "next/link";
 import appConstants from "@/helper/constant";
+import Image from "next/image";
+
 import {
   changeChatListPageTypeAction,
   resetChatAppStateAction,
 } from "@/store/chatApp/reducer";
 import { useAuthCtx } from "@/context/AuthCTX";
-import Image from "next/image";
 import { resetChatRoomSliceAction } from "@/store/chat/reducer";
-//TODO: reset funtion for all redux reset
 
 const ChatListHeader = () => {
   const { userDetails, _logout } = useAuthCtx();
@@ -25,7 +24,7 @@ const ChatListHeader = () => {
     dispatch(changeChatListPageTypeAction({ chatListPageType }));
   };
   const logoutHandler = () => {
-    logoutHandler();
+    _logout();
     dispatch(resetChatAppStateAction());
     dispatch(resetChatRoomSliceAction());
   };

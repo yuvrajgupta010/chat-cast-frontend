@@ -1,8 +1,9 @@
-import appConstants from "@/helper/constant";
-import Image from "next/image";
 import React from "react";
+import Image from "next/image";
 import { Card, Dropdown, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
+
+import appConstants from "@/helper/constant";
 
 const ChatHeader = (props) => {
   const { headerData } = props;

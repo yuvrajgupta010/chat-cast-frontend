@@ -7,8 +7,14 @@ import React, {
 } from "react";
 import { Button, Card, Dropdown } from "react-bootstrap";
 import Picker from "emoji-picker-react";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+
+import { getUploadFileUrl } from "@/store/chat/action";
 
 const MessageBar = forwardRef((props, ref) => {
+  const dispatch = useDispatch();
   const { sendMessage, socket, receiverId, chatRoomId } = props;
   const [inputStr, setInputStr] = useState("");
   const [typing, setTyping] = useState(false);
@@ -29,11 +35,72 @@ const MessageBar = forwardRef((props, ref) => {
 
   const onFileInput = async (e) => {
     e.preventDefault();
-    sendMessage({
-      filePath: "upload/photo.jpg",
-      messageContent: "inputStr.pdf",
-      messageType: "image",
-    });
+
+    const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4MB in bytes
+    const target = e.target;
+    const files = target.files || [];
+    const selectedFile = files[0];
+
+    if (selectedFile) {
+      if (selectedFile.size > MAX_FILE_SIZE) {
+        toast.error("File size should be less than 4MB");
+        return;
+      }
+      if (
+        selectedFile.type === "image/png" ||
+        selectedFile.type === "image/jpeg" ||
+        selectedFile.type === "image/jpg" ||
+        selectedFile.type === "image/webp" ||
+        selectedFile.type === "application/pdf" ||
+        selectedFile.type === "audio/mpeg" ||
+        selectedFile.type === "video/mp4" ||
+        selectedFile.type === "video/mpeg" ||
+        selectedFile.type === "video/webm" ||
+        selectedFile.type === "text/plain"
+      ) {
+        try {
+          const data = {
+            fileName: selectedFile.name,
+            contentType: selectedFile.type,
+          };
+
+          const uploadUrlResponse = await dispatch(
+            getUploadFileUrl(data)
+          ).unwrap();
+
+          if (!uploadUrlResponse) {
+            throw new Error("Something went wrong");
+          }
+
+          if (uploadUrlResponse.status !== 200) {
+            throw new Error(uploadUrlResponse?.data?.message);
+          }
+
+          const signedURL = uploadUrlResponse?.data?.data?.presignedURL;
+          const uploadPath = uploadUrlResponse?.data?.data?.uploadPath;
+
+          await axios.put(signedURL, selectedFile, {
+            headers: {
+              "Content-Type": selectedFile.type,
+            },
+          });
+
+          sendMessage({
+            filePath: uploadPath,
+            messageContent: selectedFile.name,
+            messageType: "image", // TODO: need to work with messageType
+          });
+        } catch (error) {
+          console.log(error);
+          toast.error(`Failed to  upload file. Please try again!`);
+        } finally {
+        }
+        // console.log(fileUploadReponse);
+      } else {
+        toast.error(`We don't support ${selectedFile.type} file type`);
+        return;
+      }
+    }
   };
 
   const typingHandler = (e) => {

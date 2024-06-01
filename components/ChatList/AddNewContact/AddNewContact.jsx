@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import SearchBar from "../Default/SearchBar";
 import { Card, Spinner } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { useDispatch, useSelector } from "react-redux";
-import { searchUsers } from "@/store/user/action";
 import Image from "next/image";
+
+import SearchBar from "../Default/SearchBar";
+import { searchUsers } from "@/store/user/action";
 import appConstants from "@/helper/constant";
 import { currentChatAction } from "@/store/chatApp/reducer";
 import { selectChatRoomAndUserAction } from "@/store/chat/reducer";

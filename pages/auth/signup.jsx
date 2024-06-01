@@ -30,8 +30,8 @@ const Register = () => {
         password: "",
       },
       onSubmit: async (values) => {
-        const response = await dispatch(createAccount(values)).unwrap();
-        if (response) {
+        try {
+          const response = await dispatch(createAccount(values)).unwrap();
           if (response.status === 201) {
             localStorage.setItem(
               "verificationEmail",
@@ -39,9 +39,9 @@ const Register = () => {
             );
             await router.push("/auth/verify");
             toast.success(response?.data?.message);
-          } else {
-            toast.error(response?.data?.message);
           }
+        } catch (error) {
+          toast.error(error?.data?.message);
         }
       },
     });
