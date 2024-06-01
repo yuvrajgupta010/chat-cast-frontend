@@ -1,11 +1,27 @@
-import Link from "next/link";
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React, {
+  useState,
+  forwardRef,
+  useImperativeHandle,
+  useEffect,
+  useRef,
+} from "react";
 import { Button, Card, Dropdown } from "react-bootstrap";
 import Picker from "emoji-picker-react";
 
 const MessageBar = forwardRef((props, ref) => {
-  const { sendMessage } = props;
+  const { sendMessage, socket, receiverId, chatRoomId } = props;
   const [inputStr, setInputStr] = useState("");
+  const [typing, setTyping] = useState(false);
+  const lastTypingTimeRef = useRef(null);
+  const typingTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (typingTimeoutRef.current) {
+        clearTimeout(typingTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const onEmojiClick = (event, emojiObject) => {
     setInputStr((prevInput) => prevInput + event.emoji);
@@ -20,16 +36,50 @@ const MessageBar = forwardRef((props, ref) => {
     });
   };
 
+  const typingHandler = (e) => {
+    setInputStr(e.target.value);
+
+    if (!socket || !socket.connected) return;
+
+    if (!typing) {
+      setTyping(true);
+      if (!chatRoomId || !receiverId) return;
+      socket.emit("typing:start", receiverId, chatRoomId);
+    }
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    lastTypingTimeRef.current = new Date().getTime();
+
+    typingTimeoutRef.current = setTimeout(() => {
+      const timeNow = new Date().getTime();
+      const timeDiff = timeNow - lastTypingTimeRef.current;
+      if (timeDiff >= 3000 && typing) {
+        if (!chatRoomId || !receiverId) return;
+        socket.emit("typing:stop", receiverId, chatRoomId);
+        setTyping(false);
+      }
+    }, 3000);
+  };
+
   const submitMessageHandler = () => {
-    const formateValue = inputStr.trim();
-    if (!formateValue.length) {
+    const formattedValue = inputStr.trim();
+    if (!formattedValue.length) {
       setInputStr("");
+      return;
     }
     sendMessage({
-      messageContent: formateValue,
+      messageContent: formattedValue,
       messageType: "text",
     });
     setInputStr("");
+    if (typing) {
+      if (!chatRoomId || !receiverId) return;
+      socket.emit("typing:stop", receiverId, chatRoomId);
+      setTyping(false);
+    }
   };
 
   useImperativeHandle(ref, () => ({
@@ -38,19 +88,17 @@ const MessageBar = forwardRef((props, ref) => {
 
   return (
     <Card className="m-0 br-0 shadow-none border-top">
-      {" "}
       <Card.Body className="d-flex py-4">
         <input
           className="form-control ms-0"
           placeholder="Type your message here..."
           type="text"
           onKeyDown={(e) => {
-            if (!inputStr.trim().length) return;
-            if (e.key === "Enter") {
+            if (e.key === "Enter" && inputStr.trim().length) {
               submitMessageHandler();
             }
           }}
-          onChange={(e) => setInputStr(e.target.value)}
+          onChange={typingHandler}
           value={inputStr}
         />
         <input
@@ -97,5 +145,5 @@ const MessageBar = forwardRef((props, ref) => {
   );
 });
 
-MessageBar.displayName = "Message Bar";
+MessageBar.displayName = "MessageBar";
 export default MessageBar;

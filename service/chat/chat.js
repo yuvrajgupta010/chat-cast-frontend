@@ -24,3 +24,16 @@ export const postUpdateMessageStatusService = async (data) => {
       return res;
     });
 };
+
+export const getChatMessagesService = async (data) => {
+  return await apiInterceptor
+    .get(
+      `${RestfulUrls.GET_CHAT_MESSAGES}/${data.chatId}?offset=${
+        data.offset ?? 1
+      }&limit=${data.limit ?? 12}`,
+      data.data
+    )
+    .then((res) => {
+      return res;
+    });
+};

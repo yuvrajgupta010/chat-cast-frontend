@@ -19,10 +19,15 @@ const ChatList = () => {
   const [onceRoomJoined, setOnceRoomJoined] = useState(false);
 
   useEffect(() => {
-    if (socket?.connected) {
-      const roomIds = chatList.map((chat) => chat.user.id);
-      socket.emit("join-rooms-and-show-online", { rooms: roomIds });
-    }
+    if (!socket?.connected) return;
+    // if (!chatList.length) return;
+    // if (onceRoomJoined) return;
+    const rooms = chatList.map((chat) => ({
+      chatId: chat._id,
+      receiverId: chat.receiver.id,
+    }));
+    socket.emit("join-rooms-and-show-online", { rooms: rooms });
+    // setOnceRoomJoined(true);
   }, [chatList.length, onceRoomJoined, socket]);
 
   const pageType = "default";

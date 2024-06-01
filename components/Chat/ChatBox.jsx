@@ -7,32 +7,38 @@ import { useDispatch, useSelector } from "react-redux";
 import { postUpdateMessageStatus, sendMessage } from "@/store/chatApp/action";
 import { toast } from "react-toastify";
 import {
-  currentChatUserAction,
+  currentChatAction,
   makeUsersOnlineOffline,
   updateChatListAction,
 } from "@/store/chatApp/reducer";
 import { useAuthCtx } from "@/context/AuthCTX";
+import {
+  addMessageInRoomAction,
+  selectChatRoomAndUserAction,
+} from "@/store/chat/reducer";
+import { getChatMessages } from "@/store/chat/action";
 
 const ChatBox = () => {
+  const { chatRoomMessages } = useSelector((store) => store.chatRoom);
   const { userDetails } = useAuthCtx();
-  const { currentChatUser, socket } = useSelector((state) => state.chatApp);
+  const { currentChat, socket } = useSelector((state) => state.chatApp);
+
   const dispatch = useDispatch();
-  const [chatMessages, setChatMessages] = useState([]);
 
   const messageBarRef = useRef();
 
   useEffect(() => {
-    if (currentChatUser.chatState === "new") return;
+    resetInputField();
+    if (currentChat.chatState === "new") return;
 
-    const lastMessageSenderId = currentChatUser.lastMessage.sender;
-
+    const lastMessageSenderId = currentChat.lastMessage.sender;
     if (
       lastMessageSenderId !== userDetails.id &&
-      currentChatUser?.totalUnreadMessages
+      currentChat?.totalUnreadMessages
     ) {
       dispatch(
         postUpdateMessageStatus({
-          chatId: currentChatUser._id,
+          chatId: currentChat._id,
           data: { messageStatus: "read" },
         })
       )
@@ -40,17 +46,57 @@ const ChatBox = () => {
         .then((response) => {
           if (response.status === 200) {
             if (socket?.connected) {
-              socket.emit("mark-message-read", currentChatUser.user.id);
+              socket.emit(
+                "mark-message-read",
+                currentChat.receiver.id,
+                currentChat._id
+              );
             }
           }
         });
+      dispatch(
+        updateChatListAction({
+          updateType: "chat-open",
+          chatId: currentChat._id,
+        })
+      );
     }
-  }, [currentChatUser?.user?.id, socket, dispatch]);
+  }, [currentChat?.receiver?.id, socket, dispatch]);
+
+  useEffect(() => {
+    if (!socket?.connected) return;
+    if (!currentChat?.lastMessage?.sender) return;
+    if (currentChat?.lastMessage?.sender === userDetails?.id) {
+      return;
+    }
+    dispatch(
+      postUpdateMessageStatus({
+        chatId: currentChat._id,
+        data: { messageStatus: "read" },
+      })
+    ).unwrap();
+
+    socket.emit("mark-message-read", currentChat.receiver.id, currentChat._id);
+  }, [currentChat?.lastMessage, socket]);
+
+  useEffect(() => {
+    if (!currentChat?._id) return;
+    dispatch(
+      selectChatRoomAndUserAction({
+        chatRoomId: currentChat?._id,
+        receiverId: currentChat.receiver.id,
+      })
+    );
+
+    dispatch(
+      getChatMessages({ chatId: currentChat?._id, offset: 1, limit: 12 })
+    );
+  }, [currentChat?._id]);
 
   const sendNewMessage = async (message) => {
     const formatedMessage = {
       ...message,
-      receiverId: currentChatUser.user.id,
+      receiverId: currentChat.receiver.id,
     };
     try {
       const response = await dispatch(sendMessage(formatedMessage)).unwrap();
@@ -60,22 +106,23 @@ const ChatBox = () => {
       }
 
       const responseData = response.data.data;
-      console.log(currentChatUser, "currentChatUser");
       // There is three state of message deleted, old and new
+
       if (responseData?.chatIsNew === true) {
-        setChatMessages((prev) => [...prev, responseData.message]);
         const formatedData = {
           ...responseData.chat,
           totalUnreadMessages: 0,
+          isTyping: false,
           chatState: "old",
-          user: currentChatUser.user,
+          receiver: currentChat.receiver,
         };
 
         const formatSocketData = {
           ...responseData.chat,
           totalUnreadMessages: 1,
+          isTyping: false,
           chatState: "old",
-          user: {
+          receiver: {
             id: userDetails.id,
             email: userDetails.email,
             profile: userDetails.profile,
@@ -85,28 +132,67 @@ const ChatBox = () => {
 
         socket.emit(
           "join-new-chat",
-          currentChatUser.user.id,
+          currentChat.receiver.id,
+          responseData.chat._id,
           formatSocketData,
           async (socketResponse) => {
             if (socketResponse.status === "success") {
-              console.log("socketResponse", socketResponse);
               dispatch(
                 makeUsersOnlineOffline({
-                  receiverId: currentChatUser.user.id,
+                  receiverId: currentChat.receiver.id,
                   isReceiverOnline: socketResponse.isReceiverOnline,
                 })
               );
             }
           }
         );
+        console.log(currentChat.receiver.id, "currentChat.receiver.id a");
 
         dispatch(
-          currentChatUserAction({
-            currentChatUser: formatedData,
+          currentChatAction({
+            currentChat: formatedData,
+          })
+        );
+        dispatch(
+          selectChatRoomAndUserAction({
+            chatRoomId: formatedData._id,
+            receiverId: formatedData.receiver.id,
+          })
+        );
+        dispatch(
+          addMessageInRoomAction({
+            message: responseData.message,
+            chatRoomId: formatedData._id,
           })
         );
         dispatch(
           updateChatListAction({ updateType: "new", chatData: formatedData })
+        );
+      } else if (
+        currentChat.chatState === "old" ||
+        currentChat.chatState === "deleted"
+      ) {
+        dispatch(
+          addMessageInRoomAction({
+            message: responseData.message,
+            chatRoomId: currentChat._id,
+          })
+        );
+
+        dispatch(
+          updateChatListAction({
+            updateType: "old",
+            chatId: currentChat._id,
+            lastMessage: responseData.message,
+            sendBySelf: true,
+          })
+        );
+        console.log(currentChat.receiver.id, "currentChat.receiver.id");
+        socket.emit(
+          "send-message",
+          currentChat.receiver.id,
+          currentChat._id,
+          responseData.message
         );
       }
     } catch (error) {
@@ -122,9 +208,15 @@ const ChatBox = () => {
 
   return (
     <div className="col-8 m-0 p-0 d-flex flex-column gap-0 h-100 text-dark border-start">
-      <ChatHeader headerData={currentChatUser} />
-      <ChatContainer />
-      <MessageBar ref={messageBarRef} sendMessage={sendNewMessage} />
+      <ChatHeader headerData={currentChat} />
+      <ChatContainer messages={chatRoomMessages} />
+      <MessageBar
+        ref={messageBarRef}
+        sendMessage={sendNewMessage}
+        socket={socket}
+        receiverId={currentChat?.receiver?.id}
+        chatRoomId={currentChat?._id}
+      />
     </div>
   );
 };

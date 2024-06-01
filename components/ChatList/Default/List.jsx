@@ -17,12 +17,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
 import appConstants from "@/helper/constant";
 import { useAuthCtx } from "@/context/AuthCTX";
-import { currentChatUserAction } from "@/store/chatApp/reducer";
+import { currentChatAction } from "@/store/chatApp/reducer";
+import { selectChatRoomAndUserAction } from "@/store/chat/reducer";
 
 const List = () => {
   const dispatch = useDispatch();
   const {
-    currentChatUser,
+    currentChat,
     chatListOfUser: { chatList },
     loader: { isChatListLoading },
     socket,
@@ -31,7 +32,14 @@ const List = () => {
   const { userDetails } = useAuthCtx();
 
   const selectChatHandler = (chat) => {
-    dispatch(currentChatUserAction({ currentChatUser: chat }));
+    if (chat._id === currentChat?._id) return;
+    dispatch(currentChatAction({ currentChat: chat }));
+    dispatch(
+      selectChatRoomAndUserAction({
+        chatRoomId: chat._id,
+        receiverId: chat.receiver.id,
+      })
+    );
   };
 
   return (
@@ -74,7 +82,7 @@ const List = () => {
                             return (
                               <li
                                 className={`media ${
-                                  chat._id === currentChatUser?._id
+                                  chat._id === currentChat?._id
                                     ? "selected"
                                     : ""
                                 } new border-top-0 px-2`}
@@ -95,13 +103,13 @@ const List = () => {
                                     fill
                                     className="brround cover-image"
                                     alt={
-                                      chat?.user?.profile?.fullName
-                                        ? `Profile picture of ${chat?.user?.profile?.fullName}`
+                                      chat?.receiver?.profile?.fullName
+                                        ? `Profile picture of ${chat?.receiver?.profile?.fullName}`
                                         : "Blank profile avatar"
                                     }
                                     src={
-                                      chat?.user?.profile?.profileImageURL
-                                        ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${chat?.user?.profile?.profileImageURL}`
+                                      chat?.receiver?.profile?.profileImageURL
+                                        ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${chat?.receiver?.profile?.profileImageURL}`
                                         : "/assets/images/png/blank-profile-avatar.png"
                                     }
                                   />
@@ -118,7 +126,9 @@ const List = () => {
                                 </div>
                                 <div className="media-body">
                                   <div className="media-contact-name">
-                                    <span>{chat?.user?.profile?.fullName}</span>{" "}
+                                    <span>
+                                      {chat?.receiver?.profile?.fullName}
+                                    </span>{" "}
                                     {/* <span>10 min</span> */}
                                     <span className="">&nbsp;</span>
                                   </div>

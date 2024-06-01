@@ -19,12 +19,16 @@ import {
   updateChatListAction,
   updateChatMessageStatus,
 } from "@/store/chatApp/reducer";
+import {
+  addMessageInRoomAction,
+  roomTypingHandlerAction,
+  updateChatRoomMessageStatusAction,
+} from "@/store/chat/reducer";
 
 const Chat = () => {
-  const { currentChatUser } = useSelector((store) => store.chatApp);
+  const { currentChat } = useSelector((store) => store.chatApp);
   const { isAuthenticated } = useAuthCtx();
   const dispatch = useDispatch();
-
   const [getUserChatListOnce, setGetUserChatListOnce] = useState(false);
 
   useEffect(() => {
@@ -68,7 +72,7 @@ const Chat = () => {
 
     socket.on("new-chat", (chatData) => {
       dispatch(updateChatListAction({ updateType: "new", chatData }));
-      socket.emit("join-a-room", chatData.user.id);
+      socket.emit("join-a-room", chatData._id);
     });
 
     socket.on("online-users", (data) => {
@@ -78,14 +82,58 @@ const Chat = () => {
       });
     });
 
+    socket.on("new-message", (data) => {
+      console.log("new message", "good to see you", data);
+      dispatch(
+        updateChatListAction({
+          updateType: "old",
+          chatId: data.chat,
+          lastMessage: data,
+          sendBySelf: false,
+        })
+      );
+      dispatch(
+        addMessageInRoomAction({
+          message: data,
+          chatRoomId: data.chat,
+        })
+      );
+    });
+
     socket.on("user-online-status", (data) => {
+      console.log(data, "user online status");
       dispatch(makeUsersOnlineOffline(data));
+      if (data?.isReceiverOnline) {
+        dispatch(
+          updateChatRoomMessageStatusAction({
+            status: "delivered",
+            receiverId: data?.receiverId,
+          })
+        );
+      }
     });
 
     socket.on("mark-message-read", (data) => {
       const { readerId } = data;
-      console.log("mark-message-read onnnnnnn");
       dispatch(updateChatMessageStatus({ readerId, messageStatus: "read" }));
+      dispatch(
+        updateChatRoomMessageStatusAction({
+          status: "read",
+          receiverId: readerId,
+        })
+      );
+    });
+
+    socket.on("typing:start", (data) => {
+      dispatch(
+        roomTypingHandlerAction({ receiverId: data.typerId, isTyping: true })
+      );
+    });
+
+    socket.on("typing:stop", (data) => {
+      dispatch(
+        roomTypingHandlerAction({ receiverId: data.typerId, isTyping: false })
+      );
     });
 
     socket.on("connect_error", (error) => {
@@ -109,7 +157,7 @@ const Chat = () => {
       setGetUserChatListOnce(true);
       dispatch(getUserChatList());
     }
-  }, [isAuthenticated, dispatch]);
+  }, [isAuthenticated, dispatch, getUserChatListOnce]);
 
   return (
     <>
@@ -134,7 +182,7 @@ const Chat = () => {
         >
           <ChatList />
           {/* <PurchasePlan /> */}
-          {currentChatUser ? <ChatBox /> : <Empty />}
+          {currentChat ? <ChatBox /> : <Empty />}
         </div>
       )}
     </>

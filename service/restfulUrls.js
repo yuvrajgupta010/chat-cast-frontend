@@ -11,4 +11,5 @@ export const RestfulUrls = {
   GET_USER_CHAT_LIST: "/chat/chat-list",
   SEND_MESSAGE: "/chat/send-message",
   UPDATE_MESSAGE_STATUS: "/chat/update-message-status",
+  GET_CHAT_MESSAGES: "/chat",
 };

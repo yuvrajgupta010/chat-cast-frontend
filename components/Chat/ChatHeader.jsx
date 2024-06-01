@@ -21,19 +21,19 @@ const ChatHeader = (props) => {
                   fill
                   className="brround cover-image"
                   alt={
-                    headerData?.user?.profile?.profileImageURL
-                      ? `Your photo as ${headerData?.user?.profile?.fullName}`
+                    headerData?.receiver?.profile?.profileImageURL
+                      ? `Profle photo of ${headerData?.receiver?.profile?.fullName}`
                       : "Blank profile avatar"
                   }
                   src={
-                    headerData?.user?.profile?.profileImageURL
-                      ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${headerData?.user?.profile?.profileImageURL}`
+                    headerData?.receiver?.profile?.profileImageURL
+                      ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${headerData?.receiver?.profile?.profileImageURL}`
                       : "/assets/images/png/blank-profile-avatar.png"
                   }
                 />
               </div>
               <div className="main-chat-msg-name mt-2 text-dark">
-                <h6>{headerData?.user?.profile?.fullName}</h6>
+                <h6>{headerData?.receiver?.profile?.fullName}</h6>
                 {headerData?.isReceiverOnline !== undefined ? (
                   headerData?.isReceiverOnline ? (
                     <>

@@ -7,9 +7,13 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import MessageIcon from "@mui/icons-material/Message";
 import Link from "next/link";
 import appConstants from "@/helper/constant";
-import { changeChatListPageTypeAction } from "@/store/chatApp/reducer";
+import {
+  changeChatListPageTypeAction,
+  resetChatAppStateAction,
+} from "@/store/chatApp/reducer";
 import { useAuthCtx } from "@/context/AuthCTX";
 import Image from "next/image";
+import { resetChatRoomSliceAction } from "@/store/chat/reducer";
 //TODO: reset funtion for all redux reset
 
 const ChatListHeader = () => {
@@ -20,7 +24,11 @@ const ChatListHeader = () => {
   const changeChatListPageHandler = (chatListPageType) => {
     dispatch(changeChatListPageTypeAction({ chatListPageType }));
   };
-
+  const logoutHandler = () => {
+    logoutHandler();
+    dispatch(resetChatAppStateAction());
+    dispatch(resetChatRoomSliceAction());
+  };
   return (
     <Card className="m-0 br-0 shadow-none">
       <Card.Header>
@@ -153,7 +161,7 @@ const ChatListHeader = () => {
                     <Dropdown.Item
                       as={"p"}
                       className="px-5 py-2 mb-0"
-                      onClick={_logout}
+                      onClick={logoutHandler}
                     >
                       Logout
                     </Dropdown.Item>

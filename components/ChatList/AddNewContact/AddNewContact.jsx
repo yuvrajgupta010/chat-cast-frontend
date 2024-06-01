@@ -6,7 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { searchUsers } from "@/store/user/action";
 import Image from "next/image";
 import appConstants from "@/helper/constant";
-import { currentChatUserAction } from "@/store/chatApp/reducer";
+import { currentChatAction } from "@/store/chatApp/reducer";
+import { selectChatRoomAndUserAction } from "@/store/chat/reducer";
 
 const AddNewContact = () => {
   const dispatch = useDispatch();
@@ -44,25 +45,39 @@ const AddNewContact = () => {
   };
 
   const handleAddContact = (contact) => {
-    let findResult = chatList.find((chat) => chat?.user?._id === contact._id);
+    let findResult = chatList.find(
+      (chat) => chat?.receiver?.id === contact._id
+    );
     if (!findResult) {
       findResult = deletedChatList.find(
-        (chat) => chat?.user?.id === contact._id
+        (chat) => chat?.receiver?.id === contact._id
       );
     }
     if (findResult) {
-      dispatch(currentChatUserAction(findResult));
+      dispatch(currentChatAction({ currentChat: findResult }));
+      dispatch(
+        selectChatRoomAndUserAction({
+          chatRoomId: findResult._id,
+          receiverId: findResult.receiver.id,
+        })
+      );
     } else {
       dispatch(
-        currentChatUserAction({
-          currentChatUser: {
+        currentChatAction({
+          currentChat: {
             chatState: "new",
             isReceiverOnline: undefined,
-            user: {
+            receiver: {
               ...contact,
               id: contact._id,
             },
           },
+        })
+      );
+      dispatch(
+        selectChatRoomAndUserAction({
+          chatRoomId: undefined,
+          receiverId: contact._id,
         })
       );
     }
