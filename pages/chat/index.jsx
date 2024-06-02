@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -53,36 +53,33 @@ const Chat = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (!isAuthenticated) return;
-
-    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
-
-    const socket = io(BASE_URL, {
-      // Pass any additional configurations here
-      auth: {
-        accessToken: accessToken, // Send your authentication token here
-      },
-    });
-
-    socket.on("connect", () => {
+  const onConnect = useCallback(
+    (socket) => {
       dispatch(addSocketToStateAction({ socket }));
-    });
+    },
+    [dispatch]
+  );
 
-    socket.on("new-chat", (chatData) => {
+  const onNewChat = useCallback(
+    (socket, chatData) => {
       dispatch(updateChatListAction({ updateType: "new", chatData }));
       socket.emit("join-a-room", chatData._id);
-    });
+    },
+    [dispatch]
+  );
 
-    socket.on("online-users", (data) => {
+  const onOnlineUsers = useCallback(
+    (data) => {
       const { onlineUsers } = data;
       onlineUsers.forEach((status) => {
         dispatch(makeUsersOnlineOffline(status));
       });
-    });
+    },
+    [dispatch]
+  );
 
-    socket.on("new-message", (data) => {
-      console.log("new message", "good to see you", data);
+  const onNewMessage = useCallback(
+    (data) => {
       dispatch(
         updateChatListAction({
           updateType: "old",
@@ -97,10 +94,12 @@ const Chat = () => {
           chatRoomId: data.chat,
         })
       );
-    });
+    },
+    [dispatch]
+  );
 
-    socket.on("user-online-status", (data) => {
-      console.log(data, "user online status");
+  const onUserOnlineStatus = useCallback(
+    (data) => {
       dispatch(makeUsersOnlineOffline(data));
       if (data?.isReceiverOnline) {
         dispatch(
@@ -110,9 +109,21 @@ const Chat = () => {
           })
         );
       }
-    });
+    },
+    [dispatch]
+  );
 
-    socket.on("mark-message-read", (data) => {
+  const onTypingStart = useCallback(
+    (data) => {
+      dispatch(
+        roomTypingHandlerAction({ receiverId: data.typerId, isTyping: true })
+      );
+    },
+    [dispatch]
+  );
+
+  const onMarkMessageRead = useCallback(
+    (data) => {
       const { readerId } = data;
       dispatch(updateChatMessageStatus({ readerId, messageStatus: "read" }));
       dispatch(
@@ -121,34 +132,91 @@ const Chat = () => {
           receiverId: readerId,
         })
       );
-    });
+    },
+    [dispatch]
+  );
 
-    socket.on("typing:start", (data) => {
-      dispatch(
-        roomTypingHandlerAction({ receiverId: data.typerId, isTyping: true })
-      );
-    });
-
-    socket.on("typing:stop", (data) => {
+  const onTypingStop = useCallback(
+    (data) => {
       dispatch(
         roomTypingHandlerAction({ receiverId: data.typerId, isTyping: false })
       );
-    });
+    },
+    [dispatch]
+  );
 
-    socket.on("connect_error", (error) => {
+  const onConnectError = useCallback(
+    (error) => {
       toast.error(`Couldn't connect to server: ${error.message}`);
       dispatch(addSocketToStateAction({ socket: undefined }));
+    },
+    [dispatch]
+  );
+
+  const onDisconnect = useCallback(() => {
+    dispatch(addSocketToStateAction({ socket: undefined }));
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    const accessToken = JSON.parse(localStorage.getItem("accessToken"));
+
+    const socket = io(BASE_URL, {
+      // Pass any additional configurations here
+      auth: {
+        accessToken: accessToken, // Send your authentication token here
+      },
     });
 
-    socket.on("disconnect", () => {
-      dispatch(addSocketToStateAction({ socket: undefined }));
-    });
+    socket.on("connect", onConnect.bind(null, socket));
+
+    socket.on("new-chat", onNewChat.bind(null, socket));
+
+    socket.on("online-users", onOnlineUsers);
+
+    socket.on("new-message", onNewMessage);
+
+    socket.on("user-online-status", onUserOnlineStatus);
+
+    socket.on("mark-message-read", onMarkMessageRead);
+
+    socket.on("typing:start", onTypingStart);
+
+    socket.on("typing:stop", onTypingStop);
+
+    socket.on("connect_error", onConnectError);
+
+    socket.on("disconnect", onDisconnect);
 
     return () => {
       // Clean up when component unmounts
       socket.disconnect();
+      socket.off("connect", onConnect);
+      socket.off("new-chat", onNewChat);
+      socket.off("online-users", onOnlineUsers);
+      socket.off("new-message", onNewMessage);
+      socket.off("user-online-status", onUserOnlineStatus);
+      socket.off("mark-message-read", onMarkMessageRead);
+      socket.off("typing:start", onTypingStart);
+      socket.off("typing:stop", onTypingStop);
+      socket.off("connect_error", onConnectError);
+      socket.off("disconnect", onDisconnect);
     };
-  }, [isAuthenticated, dispatch]);
+  }, [
+    isAuthenticated,
+    dispatch,
+    onConnect,
+    onNewChat,
+    onOnlineUsers,
+    onNewMessage,
+    onUserOnlineStatus,
+    onMarkMessageRead,
+    onTypingStart,
+    onTypingStop,
+    onConnectError,
+    onDisconnect,
+  ]);
 
   useEffect(() => {
     if (!isAuthenticated) return;

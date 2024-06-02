@@ -30,7 +30,6 @@ const ChatBox = () => {
   useEffect(() => {
     resetInputField();
     if (currentChat.chatState === "new") return;
-    console.log("I am running AAAAA");
 
     const lastMessageSenderId = currentChat.lastMessage.sender;
     if (
@@ -149,7 +148,6 @@ const ChatBox = () => {
             }
           }
         );
-        console.log(currentChat.receiver.id, "currentChat.receiver.id a");
 
         dispatch(
           currentChatAction({
@@ -190,7 +188,6 @@ const ChatBox = () => {
             sendBySelf: true,
           })
         );
-        console.log(currentChat.receiver.id, "currentChat.receiver.id");
         socket.emit(
           "send-message",
           currentChat.receiver.id,
