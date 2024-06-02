@@ -36,9 +36,13 @@ const Login = () => {
               userDetails: response?.data?.data?.user,
               accessToken: response.data?.data?.jwtToken,
             });
-            router.push("/chat");
           }
         } catch (error) {
+          if (error.status === 403) {
+            toast.error(error.data.message);
+            router.push("/auth/resend-verify-link");
+            return;
+          }
           toast.error(error.data.message);
         } finally {
           setIsSubmitting(false);

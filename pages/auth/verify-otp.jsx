@@ -40,9 +40,10 @@ const VerifyOtp = () => {
             throw new Error("OTP must only be Numeric");
           }
           const forgetToken = localStorage.getItem("forgetToken");
+
           if (!forgetToken) {
-            // TODO: handle email on refresh
-            throw new Error("Something went wrong!");
+            router.push("/auth/forget-password");
+            throw new Error("Something went wrong! Please try again");
           }
 
           const data = {
@@ -53,23 +54,19 @@ const VerifyOtp = () => {
           };
 
           const response = await dispatch(recoverAccount(data)).unwrap();
-          if (response) {
-            if (response.status === 200) {
-              localStorage.removeItem("forgetToken");
-              _authenticate({
-                userDetails: response?.data?.data?.user,
-                accessToken: response.data?.data?.jwtToken,
-              });
-              // router.push("/chat");
-              // console.log(response, "Successfully verified");
-              // TODO: Start profile logic here after setting up Context and local storage
-              toast.success(response?.data?.message);
-            } else {
-              throw new Error(response?.data?.message);
-            }
+          if (response.status === 200) {
+            localStorage.removeItem("forgetToken");
+            _authenticate({
+              userDetails: response?.data?.data?.user,
+              accessToken: response.data?.data?.jwtToken,
+            });
+            // router.push("/chat");
+            // console.log(response, "Successfully verified");
+            // TODO: Start profile logic here after setting up Context and local storage
+            toast.success(response?.data?.message);
           }
         } catch (error) {
-          toast.error(error.message);
+          toast.error(error.data.message);
         } finally {
           setIsSubmitting(false);
         }
@@ -88,7 +85,7 @@ const VerifyOtp = () => {
       const forgetToken = localStorage.getItem("forgetToken");
       if (!forgetToken) {
         // TODO: handle forgetToken on refresh
-        router.push("/");
+        router.push("/auth/forget-password");
         throw new Error("Something went wrong!");
       }
       const response = await dispatch(
@@ -196,7 +193,7 @@ const VerifyOtp = () => {
               />
             </div>
             {errors.newPassword && touched.newPassword ? (
-              <p className="text-danger">{errors.password}</p>
+              <p className="text-danger">{errors.newPassword}</p>
             ) : null}
             <div
               className="wrap-input100 validate-input input-group"
@@ -225,7 +222,7 @@ const VerifyOtp = () => {
               />
             </div>
             {errors.confirmPassword && touched.confirmPassword ? (
-              <p className="text-danger">{errors.password}</p>
+              <p className="text-danger">{errors.confirmPassword}</p>
             ) : null}
             <div className="submit">
               <button

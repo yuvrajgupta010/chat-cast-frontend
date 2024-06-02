@@ -27,9 +27,8 @@ export const recoverAccount = createAsyncThunk(
       const response = await putForgetPasswordService(data);
       return response;
     } catch (error) {
-      // rejectWithValue(error);
       console.error(actionTypes.RECOVER_ACCOUNT, error);
-      return error;
+      return rejectWithValue(error);
     }
   }
 );

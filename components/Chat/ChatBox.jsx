@@ -30,6 +30,7 @@ const ChatBox = () => {
   useEffect(() => {
     resetInputField();
     if (currentChat.chatState === "new") return;
+    console.log("I am running AAAAA");
 
     const lastMessageSenderId = currentChat.lastMessage.sender;
     if (
@@ -81,6 +82,8 @@ const ChatBox = () => {
 
   useEffect(() => {
     if (!currentChat?._id) return;
+    if (currentChat.chatState === "new") return;
+
     dispatch(
       selectChatRoomAndUserAction({
         chatRoomId: currentChat?._id,
@@ -159,12 +162,12 @@ const ChatBox = () => {
             receiverId: formatedData.receiver.id,
           })
         );
-        dispatch(
-          addMessageInRoomAction({
-            message: responseData.message,
-            chatRoomId: formatedData._id,
-          })
-        );
+        // dispatch(
+        //   addMessageInRoomAction({
+        //     message: responseData.message,
+        //     chatRoomId: formatedData._id,
+        //   })
+        // );
         dispatch(
           updateChatListAction({ updateType: "new", chatData: formatedData })
         );

@@ -45,9 +45,9 @@ const List = () => {
 
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar placeholder="Search your contact" /> */}
       <div
-        className="card mb-0 overflow-auto br-0"
+        className="card mb-0 overflow-auto br-0 pt-5"
         style={{ flex: 1, boxShadow: "none" }}
       >
         {!isChatListLoading ? (
@@ -133,7 +133,7 @@ const List = () => {
                                     {/* <span>10 min</span> */}
                                     <span className="">&nbsp;</span>
                                   </div>
-                                  <div className="d-flex align-items-center justify-content-between">
+                                  <div className="d-flex align-items-center justify-content-between gap-1">
                                     <p className="d-flex align-items-center gap-1">
                                       {chat?.lastMessage?.sender ===
                                       userDetails?.id ? (
@@ -143,7 +143,7 @@ const List = () => {
                                               chat?.lastMessage?.messageStatus
                                             }
                                           />
-                                          <span>
+                                          <span className="text-wrap">
                                             {chat?.lastMessage?.messageType !==
                                             "text" ? (
                                               <i className="fe fe-paperclip text-black-50 me-1"></i>
@@ -161,7 +161,7 @@ const List = () => {
                                         </span>
                                       )}
                                     </p>
-                                    <p>
+                                    <p className="text-nowrap">
                                       {dayjs(
                                         chat?.lastMessage?.createdAt
                                       ).format("hh:mm A")}

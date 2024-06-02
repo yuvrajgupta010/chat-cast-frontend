@@ -5,7 +5,6 @@ const ResendOtp = ({ resendClickHandler = () => {} }) => {
 
   useEffect(() => {
     let timer = setInterval(() => {
-      console.log(otpTimer, "setOtpTimer running");
       setOtpTimer((prevTime) => {
         if (prevTime === 0) {
           clearInterval(timer);

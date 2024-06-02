@@ -19,13 +19,17 @@ const AuthContextProvider = (props) => {
     const token = localStorage.getItem("accessToken");
     const userDetails = localStorage.getItem("userDetails");
 
+    const pathname = router.pathname;
+
     if (token && userDetails) {
       setUserDetails(JSON.parse(userDetails));
       setIsAuthenticated(true);
-      router.push("/chat");
+      router.replace("/chat");
     } else {
-      localStorage.clear();
-      router.push("/");
+      if (pathname === "/chat") {
+        localStorage.clear();
+        router.push("/");
+      }
       return;
     }
   };
@@ -41,6 +45,7 @@ const AuthContextProvider = (props) => {
     setIsAuthenticated(true);
     localStorage.setItem("userDetails", JSON.stringify(userDetails));
     localStorage.setItem("accessToken", JSON.stringify(accessToken));
+    router.push("/chat");
   };
 
   const _logout = async () => {
