@@ -123,10 +123,10 @@ const ChatListHeader = () => {
                 <span
                   className="text-muted"
                   style={{ cursor: "pointer" }}
-                  onClick={changeChatListPageHandler.bind(
-                    null,
-                    appConstants.ADD_GROUP_CHAT_LIST_PAGE
-                  )}
+                  // onClick={changeChatListPageHandler.bind(
+                  //   null,
+                  //   appConstants.ADD_GROUP_CHAT_LIST_PAGE
+                  // )}
                 >
                   <GroupAddIcon />
                 </span>
@@ -153,10 +153,9 @@ const ChatListHeader = () => {
                         Profile
                       </Dropdown.Item>
                     ) : null}
-                    <Dropdown.Item as={"p"} className="px-5 py-2 mb-0">
+                    {/* <Dropdown.Item as={"p"} className="px-5 py-2 mb-0">
                       Purchase Plan
-                    </Dropdown.Item>
-
+                    </Dropdown.Item> */}
                     <Dropdown.Item
                       as={"p"}
                       className="px-5 py-2 mb-0"

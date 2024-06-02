@@ -55,7 +55,12 @@ const chatRoom = createSlice({
       });
     },
     resetChatRoomSlice: (state, action) => {
-      state = initialState;
+      state.chatRoomId = undefined;
+      state.receiverId = undefined;
+      state.chatRoomMessages = [];
+      state.hasMoreMessages = false;
+      state.isTyping = false;
+      state.loader.isMessageLoading = false;
     },
   },
   extraReducers: (builder) => {

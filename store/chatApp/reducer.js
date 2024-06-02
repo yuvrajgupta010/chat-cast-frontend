@@ -153,7 +153,12 @@ const chatAppSlice = createSlice({
       }
     },
     resetChatAppState: (state, action) => {
-      state = initialState;
+      state.currentChat = undefined;
+      state.chatListOfUser.chatList = [];
+      state.chatListOfUser.deletedChatList = [];
+      state.chatListPageType = appConstants.DEFAULT_CHAT_LIST_PAGE;
+      state.socket = undefined;
+      state.loader.isChatListLoading = false;
     },
     isUserTyping: (state, action) => {},
   },
