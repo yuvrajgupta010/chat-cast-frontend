@@ -24,7 +24,11 @@ export default function Document() {
           name="publisher"
           content="My personal practice project yuvrajgupta.in"
         ></meta>
-        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" />
+
+        <link
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600&display=swap"
+          rel="stylesheet"
+        />
         <link
           href="/assets/css/bootstrap.min.css"
           rel="stylesheet"
