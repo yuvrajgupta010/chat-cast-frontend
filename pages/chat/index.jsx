@@ -164,9 +164,11 @@ const Chat = () => {
 
     const socket = io(BASE_URL, {
       // Pass any additional configurations here
+      transports: ["websocket"],
       auth: {
         accessToken: accessToken, // Send your authentication token here
       },
+      withCredentials: true,
     });
 
     socket.on("connect", onConnect.bind(null, socket));
