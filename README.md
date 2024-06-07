@@ -63,17 +63,13 @@ Start the Client
 ![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/login.PNG)
 ![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/signup.PNG)
 ### Real Time Chatting with Typing indicators
-![](https://raw.githubusercontent.com/yuvrajgupta010/public_file/main/chat-cast/chat-cast-typing.png)
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-notification.png)
 ### One to One chat
 ![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/mainscreen.PNG)
 ### Search Users
 ![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/search.PNG)
-### Create Group Chats
-![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/new%20grp.PNG)
 ### Notifications 
-![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/group%20%2B%20notif.PNG)
-### Add or Remove users from group
-![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/add%20rem.PNG)
+![](https://raw.githubusercontent.com/yuvrajgupta010/public_file/main/chat-cast/chat-cast-notification.png)
 ### View Other user Profile
 ![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/profile.PNG)
 ## Made By
