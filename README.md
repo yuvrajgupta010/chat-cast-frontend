@@ -29,7 +29,7 @@ Clone the project
 Go to the project directory
 
 ```bash
-  cd mern-chat-app
+  cd chat-cast-frontend
 ```
 
 Install dependencies
