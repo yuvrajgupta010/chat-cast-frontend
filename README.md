@@ -1,5 +1,5 @@
 
-# Talk-A-Tive
+# Chat-Chat
 
 Chat Cast is a Chatting App.
 Uses Socket.io for real time communication and stores user details in encrypted format in Mongo DB Database.
@@ -17,7 +17,7 @@ Uses Socket.io for real time communication and stores user details in encrypted 
 
 [https://chat-cast.personal.yuvrajgupta.in/](https://chat-cast.personal.yuvrajgupta.in/)
 
-![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/group%20%2B%20notif.PNG)
+![](https://chat-cast.s3.ap-south-1.amazonaws.com/assets/screenshot/chat-cast-front.png)
 ## Run Locally
 
 Clone the project
