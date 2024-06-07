@@ -35,25 +35,20 @@ Go to the project directory
 Install dependencies
 
 ```bash
-  npm install
+  yarn install
 ```
 
 ```bash
   cd frontend/
-  npm install
+  yarn install
 ```
 
-Start the server
-
-```bash
-  npm run start
-```
-Start the Client
+Start the Frontend
 
 ```bash
   //open now terminal
   cd frontend
-  npm start
+  npm run dev
 ```
 
   
