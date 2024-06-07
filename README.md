@@ -1,4 +1,3 @@
-
 # Chat-Chat
 
 Chat Cast is a Chatting App.
@@ -18,6 +17,11 @@ Uses Socket.io for real time communication and stores user details in encrypted 
 [https://chat-cast.personal.yuvrajgupta.in/](https://chat-cast.personal.yuvrajgupta.in/)
 
 ![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-front.png)
+
+## Want a look on backend repo ?
+
+[https://github.com/yuvrajgupta010/chat-cast-backend](https://github.com/yuvrajgupta010/chat-cast-backend)
+
 ## Run Locally
 
 Clone the project
