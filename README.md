@@ -38,11 +38,6 @@ Install dependencies
   yarn install
 ```
 
-```bash
-  cd frontend/
-  yarn install
-```
-
 Start the Frontend
 
 ```bash
