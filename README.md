@@ -17,7 +17,7 @@ Uses Socket.io for real time communication and stores user details in encrypted 
 
 [https://chat-cast.personal.yuvrajgupta.in/](https://chat-cast.personal.yuvrajgupta.in/)
 
-![](https://chat-cast.s3.ap-south-1.amazonaws.com/assets/screenshot/chat-cast-front.png)
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-front.png)
 ## Run Locally
 
 Clone the project
@@ -60,20 +60,26 @@ Start the Client
 # Features
 
 ### Authenticaton
-![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/login.PNG)
-![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/signup.PNG)
-### Real Time Chatting with Typing indicators
-![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-notification.png)
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-login.png)
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-sigup.png)
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-forget.png)
 ### One to One chat
-![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/mainscreen.PNG)
-### Search Users
-![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/search.PNG)
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-chat.png)
+### Add emoji in message
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-emoji.png)
+### Real Time Chatting with Typing indicators
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-typing.png)
+### Share files with each other
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-file-share.png)
 ### Notifications 
-![](https://raw.githubusercontent.com/yuvrajgupta010/public_file/main/chat-cast/chat-cast-notification.png)
-### View Other user Profile
-![](https://github.com/piyush-eon/mern-chat-app/blob/master/screenshots/profile.PNG)
+![](https://github.com/yuvrajgupta010/public_file/main/chat-cast/chat-cast-notification.png)
+### Edit profile
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-profile.png)
+### Search Users
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-search-user.png)
+
 ## Made By
 
-- [@Piyush-eon](https://github.com/piyush-eon)
+- [@Yuvrajgupta036](https://github.com/yuvrajgupta036)
 
   
