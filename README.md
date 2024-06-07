@@ -5,7 +5,7 @@ Chat Cast is a Chatting App.
 Uses Socket.io for real time communication and stores user details in encrypted format in Mongo DB Database.
 ## Tech Stack
 
-**Client:** React JS
+**Client:** Next JS
 
 **Backend:** Node JS, Express JS
 
