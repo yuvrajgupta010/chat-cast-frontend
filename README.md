@@ -38,11 +38,9 @@ Install dependencies
   yarn install
 ```
 
-Start the Frontend
+Start the project
 
 ```bash
-  //open now terminal
-  cd frontend
   npm run dev
 ```
 
