@@ -64,7 +64,7 @@ Start the project
 ### Share files with each other
 ![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-file-share.png)
 ### Notifications 
-![](https://github.com/yuvrajgupta010/public_file/main/chat-cast/chat-cast-notification.png)
+![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-notification.png)
 ### Edit profile
 ![](https://github.com/yuvrajgupta010/public_file/blob/main/chat-cast/chat-cast-profile.png)
 ### Search Users
