@@ -72,6 +72,6 @@ Start the project
 
 ## Made By
 
-- [@Yuvrajgupta036](https://github.com/yuvrajgupta036)
+- [@Yuvrajgupta010](https://github.com/yuvrajgupta010)
 
   
