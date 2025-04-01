@@ -30,11 +30,6 @@ export default function Document() {
           rel="stylesheet"
         />
         <link
-          href="/assets/css/bootstrap.min.css"
-          rel="stylesheet"
-          id="bootstrapLink"
-        />
-        <link
           rel="icon"
           href="/favicon.ico"
           type="image/x-icon"
