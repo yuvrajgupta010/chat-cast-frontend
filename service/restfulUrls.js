@@ -1,5 +1,5 @@
-export const BASE_URL = "http://localhost:8080";
-// export const BASE_URL = "https://api.chat-cast.personal.yuvrajgupta.in";
+// export const BASE_URL = "http://localhost:8080";
+export const BASE_URL = "https://api.chat-cast.personal.yuvrajgupta.in";
 
 export const RestfulUrls = {
   SIGN_UP: "/auth/signup",
