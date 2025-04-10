@@ -16,3 +16,9 @@ export const resendAccountVerificationOtpService = async (data) => {
       return res;
     });
 };
+
+export const authStatusService = async () => {
+  return await apiInterceptor.get(RestfulUrls.AUTH_STATUS).then((res) => {
+    return res;
+  });
+};

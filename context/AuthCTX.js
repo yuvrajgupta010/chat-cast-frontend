@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useCallback, useContext } from "react";
 import { useRouter } from "next/router";
+import { authStatus } from "@/store/auth/verify/action";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 export const AuthCTX = React.createContext({
   userDetails: null,
@@ -14,16 +17,18 @@ const AuthContextProvider = (props) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const _authenticateOnRefresh = () => {
-    const token = localStorage.getItem("accessToken");
+  const _authenticateOnRefresh = (data) => {
+    localStorage.setItem("userDetails", JSON.stringify(data));
     const userDetails = localStorage.getItem("userDetails");
 
     const pathname = router.pathname;
 
-    if (token && userDetails) {
+    if (userDetails) {
       setUserDetails(JSON.parse(userDetails));
       setIsAuthenticated(true);
+      if (pathname === "/chat") return;
       router.replace("/chat");
     } else {
       if (pathname === "/chat") {
@@ -36,15 +41,25 @@ const AuthContextProvider = (props) => {
 
   useEffect(() => {
     if (!router.isReady) return;
-    _authenticateOnRefresh();
-  }, [router.isReady]);
+    const verifyAuthStatus = async () => {
+      try {
+        const response = await dispatch(authStatus()).unwrap();
+        console.log(response);
+        if (response.status === 200) {
+          _authenticateOnRefresh(response?.data?.data?.user);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    verifyAuthStatus();
+  }, [router.isReady, dispatch]);
 
   const _authenticate = (data) => {
-    const { userDetails, accessToken } = data;
+    const { userDetails } = data;
     setUserDetails(userDetails);
     setIsAuthenticated(true);
     localStorage.setItem("userDetails", JSON.stringify(userDetails));
-    localStorage.setItem("accessToken", JSON.stringify(accessToken));
     router.push("/chat");
   };
 

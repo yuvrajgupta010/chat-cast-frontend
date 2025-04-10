@@ -2,6 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { actionTypes } from "../../actionTypes";
 import {
+  authStatusService,
   resendAccountVerificationOtpService,
   verifyAccountService,
 } from "@/service/auth/verify";
@@ -30,6 +31,19 @@ export const resendVerificationOtp = createAsyncThunk(
       // rejectWithValue(error);
       console.error(actionTypes.RESEND_ACCOUNT_VERIFICATION_OTP, error);
       return error;
+    }
+  }
+);
+
+export const authStatus = createAsyncThunk(
+  actionTypes.AUTH_STATUS,
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await authStatusService();
+      return response;
+    } catch (error) {
+      console.error(actionTypes.AUTH_STATUS, error);
+      return rejectWithValue(error);
     }
   }
 );

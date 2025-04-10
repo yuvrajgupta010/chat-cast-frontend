@@ -11,6 +11,8 @@ import Seo from "@/shared/layout-components/seo/seo";
 import loginFormValidation from "@/helper/yup/login";
 import { loginUser } from "@/store/auth/login/action";
 import { AuthCTX, useAuthCtx } from "@/context/AuthCTX";
+import { BASE_URL } from "@/service/restfulUrls";
+import { googleAuthPage } from "@/helper/sharedFunction";
 
 const Login = () => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);
@@ -34,7 +36,6 @@ const Login = () => {
           if (response.status === 200) {
             _authenticate({
               userDetails: response?.data?.data?.user,
-              accessToken: response.data?.data?.jwtToken,
             });
           }
         } catch (error) {
@@ -168,21 +169,21 @@ const Login = () => {
                     <span>Login with Social</span>
                   </label>
                   <div className="d-flex justify-content-center">
-                    {/* <Link href="#!"> */}
-                    <div className="social-login me-4 text-center">
-                      <i className="fa fa-google"></i>
-                    </div>
-                    {/* </Link> */}
-                    {/* <Link href="#!"> */}
-                    <div className="social-login me-4 text-center">
-                      <i className="fa fa-facebook"></i>
-                    </div>
-                    {/* </Link> */}
-                    {/* <Link href="#!"> */}
-                    <div className="social-login text-center mb-5">
-                      <i className="fa fa-twitter"></i>
-                    </div>
-                    {/* </Link> */}
+                    <Link href={`${BASE_URL}/auth/google`} className="m-0 p-0">
+                      <div className="social-login me-4 text-center">
+                        <i className="fa fa-google"></i>
+                      </div>
+                    </Link>
+                    {/* <Link href="#!">
+                      <div className="social-login me-4 text-center">
+                        <i className="fa fa-facebook"></i>
+                      </div>
+                    </Link>
+                    <Link href="#!">
+                      <div className="social-login text-center mb-5">
+                        <i className="fa fa-twitter"></i>
+                      </div>
+                    </Link> */}
                   </div>
                   {/* <Tabs
                     defaultActiveKey="Email"

@@ -39,15 +39,8 @@ const VerifyOtp = () => {
           if (!formatedOtp) {
             throw new Error("OTP must only be Numeric");
           }
-          const forgetToken = localStorage.getItem("forgetToken");
-
-          if (!forgetToken) {
-            router.push("/auth/forget-password");
-            throw new Error("Something went wrong! Please try again");
-          }
 
           const data = {
-            forgetToken,
             otp: formatedOtp,
             newPassword: values.newPassword,
             confirmPassword: values.confirmPassword,
@@ -73,12 +66,12 @@ const VerifyOtp = () => {
       },
     });
 
-  useEffect(() => {
-    const haveForgetToken = localStorage.getItem("forgetToken");
-    if (!haveForgetToken) {
-      router.push("/");
-    }
-  }, [router]);
+  // useEffect(() => {
+  //   const haveForgetToken = localStorage.getItem("forgetToken");
+  //   if (!haveForgetToken) {
+  //     router.push("/");
+  //   }
+  // }, [router]);
 
   const resendOTPHandler = useCallback(async () => {
     try {

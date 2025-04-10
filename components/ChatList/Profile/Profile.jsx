@@ -215,6 +215,8 @@ const Profile = () => {
     }
   };
 
+  const profileImageURL = userDetails?.profile?.profileImageURL;
+
   return (
     <Card
       className="br-0 overflow-hidden p-0 m-0"
@@ -233,13 +235,15 @@ const Profile = () => {
                   opacity: isProfilePictureUpdating ? 0.5 : 1,
                 }}
                 alt={
-                  userDetails?.profile?.profileImageURL
+                  profileImageURL
                     ? `Your photo as ${userDetails?.profile?.fullName}`
                     : "Blank profile avatar"
                 }
                 src={
-                  userDetails?.profile?.profileImageURL
-                    ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${userDetails?.profile?.profileImageURL}`
+                  profileImageURL
+                    ? userDetails?.accountAuthType === "google"
+                      ? profileImageURL
+                      : `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${userDetails?.profile?.profileImageURL}`
                     : "/assets/images/png/blank-profile-avatar.png"
                 }
               />

@@ -5,6 +5,8 @@ export const RestfulUrls = {
   SIGN_UP: "/auth/signup",
   ACCOUNT_VERIFICATION: "/auth/account-verification",
   LOGIN: "/auth/login",
+  LOGOUT: "/auth/logout",
+  AUTH_STATUS: "/auth/auth-status",
   FORGOT_PASSWORD: "/auth/forget-password",
   PROFILE_UPDATE: "/user/profile",
   GET_PROFILE_UPLOAD_URL: "/user/profile/picture",

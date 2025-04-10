@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 import Seo from "@/shared/layout-components/seo/seo";
 import sigupFormValidation from "@/helper/yup/signup";
 import { createAccount } from "@/store/auth/signup/action";
+import { googleAuthPage } from "@/helper/sharedFunction";
+import { BASE_URL } from "@/service/restfulUrls";
 
 const Register = () => {
   const [isPolicyAccepted, setIsPolicyAccepted] = useState(false);
@@ -182,12 +184,12 @@ const Register = () => {
               <span>Register with Social</span>
             </label>
             <div className="d-flex justify-content-center">
-              <span className="text-primary">
+              <Link href={`${BASE_URL}/auth/google`} className="m-0 p-0">
                 <div className="social-login me-4 text-center">
                   <i className="fa fa-google"></i>
                 </div>
-              </span>
-              <span className="text-primary">
+              </Link>
+              {/* <span className="text-primary">
                 <div className="social-login me-4 text-center">
                   <i className="fa fa-facebook"></i>
                 </div>
@@ -196,7 +198,7 @@ const Register = () => {
                 <div className="social-login text-center">
                   <i className="fa fa-twitter"></i>
                 </div>
-              </span>
+              </span> */}
             </div>
           </form>
         </div>

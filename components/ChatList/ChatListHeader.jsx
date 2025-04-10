@@ -1,6 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, Dropdown, Nav, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Card,
+  Dropdown,
+  Nav,
+  OverlayTrigger,
+  Spinner,
+  Tooltip,
+} from "react-bootstrap";
 import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import PersonAddAlt1Icon from "@mui/icons-material/PersonAddAlt1";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
@@ -14,20 +21,36 @@ import {
 } from "@/store/chatApp/reducer";
 import { useAuthCtx } from "@/context/AuthCTX";
 import { resetChatRoomSliceAction } from "@/store/chat/reducer";
+import { logoutUser } from "@/store/auth/logout/action";
 
 const ChatListHeader = () => {
   const { userDetails, _logout } = useAuthCtx();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const dispatch = useDispatch();
   const { chatListPageType } = useSelector((store) => store.chatApp);
 
   const changeChatListPageHandler = (chatListPageType) => {
     dispatch(changeChatListPageTypeAction({ chatListPageType }));
   };
-  const logoutHandler = () => {
-    _logout();
-    dispatch(resetChatAppStateAction());
-    dispatch(resetChatRoomSliceAction());
+  const logoutHandler = async () => {
+    setIsLoggingOut(true);
+    try {
+      const response = await dispatch(logoutUser()).unwrap();
+      if (response.status === 200) {
+        _logout();
+        dispatch(resetChatAppStateAction());
+        dispatch(resetChatRoomSliceAction());
+      }
+    } catch (error) {
+      toast.error(error.data.message);
+      console.error(error);
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
+
+  const profileImageURL = userDetails?.profile?.profileImageURL;
+
   return (
     <Card className="m-0 br-0 shadow-none">
       <Card.Header>
@@ -45,13 +68,15 @@ const ChatListHeader = () => {
                 fill
                 className="brround cover-image"
                 alt={
-                  userDetails?.profile?.profileImageURL
+                  profileImageURL
                     ? `Your photo as ${userDetails?.profile?.fullName}`
                     : "Blank profile avatar"
                 }
                 src={
-                  userDetails?.profile?.profileImageURL
-                    ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${userDetails?.profile?.profileImageURL}`
+                  profileImageURL
+                    ? userDetails?.accountAuthType === "google"
+                      ? profileImageURL
+                      : `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${userDetails?.profile?.profileImageURL}`
                     : "/assets/images/png/blank-profile-avatar.png"
                 }
               />
@@ -161,7 +186,7 @@ const ChatListHeader = () => {
                       className="px-5 py-2 mb-0"
                       onClick={logoutHandler}
                     >
-                      Logout
+                      {isLoggingOut ? "Logging out..." : "Logout"}
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>

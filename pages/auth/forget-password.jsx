@@ -28,8 +28,6 @@ const ForgotPassword = () => {
         try {
           const response = await dispatch(forgetPassword(values)).unwrap();
           if (response.status === 201) {
-            const forgetToken = response?.data?.data?.forgetToken;
-            localStorage.setItem("forgetToken", forgetToken);
             router.push("/auth/verify-otp");
             toast.success(response?.data?.message);
           }
@@ -102,7 +100,7 @@ const ForgotPassword = () => {
                 </Link>
               </p>
             </div>
-            <label className="login-social-icon">
+            {/* <label className="login-social-icon">
               <span>OR</span>
             </label>
             <div className="d-flex justify-content-center">
@@ -121,7 +119,7 @@ const ForgotPassword = () => {
                   <i className="fa fa-twitter"></i>
                 </div>
               </Link>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>
