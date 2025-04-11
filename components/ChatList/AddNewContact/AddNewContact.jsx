@@ -84,6 +84,8 @@ const AddNewContact = () => {
     }
   };
 
+  const profileImageURL = contact?.profile?.profileImageURL;
+
   return (
     <div
       className="card mb-0 overflow-auto br-0"
@@ -124,13 +126,15 @@ const AddNewContact = () => {
                           fill
                           className="brround cover-image"
                           alt={
-                            contact?.profile?.profileImageURL
+                            profileImageURL
                               ? `Profile pic of ${contact?.profile?.fullName}`
                               : "Blank profile avatar"
                           }
                           src={
-                            contact?.profile?.profileImageURL
-                              ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${contact?.profile?.profileImageURL}`
+                            profileImageURL
+                              ? userDetails?.accountAuthType === "google"
+                                ? profileImageURL
+                                : `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${profileImageURL}`
                               : "/assets/images/png/blank-profile-avatar.png"
                           }
                         />

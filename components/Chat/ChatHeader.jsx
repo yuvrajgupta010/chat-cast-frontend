@@ -8,6 +8,8 @@ import appConstants from "@/helper/constant";
 const ChatHeader = (props) => {
   const { headerData } = props;
 
+  const profileImageURL = headerData?.receiver?.profile?.profileImageURL;
+
   return (
     <Card className="m-0 br-0 shadow-none">
       <Card.Header>
@@ -22,13 +24,15 @@ const ChatHeader = (props) => {
                   fill
                   className="brround cover-image"
                   alt={
-                    headerData?.receiver?.profile?.profileImageURL
+                    profileImageURL
                       ? `Profle photo of ${headerData?.receiver?.profile?.fullName}`
                       : "Blank profile avatar"
                   }
                   src={
-                    headerData?.receiver?.profile?.profileImageURL
-                      ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${headerData?.receiver?.profile?.profileImageURL}`
+                    profileImageURL
+                      ? userDetails?.accountAuthType === "google"
+                        ? profileImageURL
+                        : `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${profileImageURL}`
                       : "/assets/images/png/blank-profile-avatar.png"
                   }
                 />
