@@ -9,12 +9,14 @@ import { searchUsers } from "@/store/user/action";
 import appConstants from "@/helper/constant";
 import { currentChatAction } from "@/store/chatApp/reducer";
 import { selectChatRoomAndUserAction } from "@/store/chat/reducer";
+import { useAuthCtx } from "@/context/AuthCTX";
 
 const AddNewContact = () => {
   const dispatch = useDispatch();
   const {
     chatListOfUser: { chatList, deletedChatList },
   } = useSelector((store) => store.chatApp);
+  const { userDetails } = useAuthCtx();
   const [searchQuery, setSearchQuery] = useState("");
   const [searchContacts, setSearchContacts] = useState([]);
   const [searchingContacts, setSearchingContacts] = useState(false);

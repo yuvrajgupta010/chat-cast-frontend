@@ -4,9 +4,11 @@ import { Card, Dropdown, Nav } from "react-bootstrap";
 import { useSelector } from "react-redux";
 
 import appConstants from "@/helper/constant";
+import { useAuthCtx } from "@/context/AuthCTX";
 
 const ChatHeader = (props) => {
   const { headerData } = props;
+  const { userDetails } = useAuthCtx();
 
   const profileImageURL = headerData?.receiver?.profile?.profileImageURL;
 
