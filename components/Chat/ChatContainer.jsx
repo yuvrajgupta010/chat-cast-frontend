@@ -156,7 +156,8 @@ const ChatContainer = (props) => {
                             }
                             src={
                               currentChat?.receiver?.profile?.profileImageURL
-                                ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${currentChat?.receiver?.profile?.profileImageURL}`
+                                ? currentChat?.receiver?.profile
+                                    ?.profileImageURL
                                 : "/assets/images/png/blank-profile-avatar.png"
                             }
                           />
@@ -210,7 +211,7 @@ const ChatContainer = (props) => {
                       }
                       src={
                         currentChat?.receiver?.profile?.profileImageURL
-                          ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${currentChat?.receiver?.profile?.profileImageURL}`
+                          ? currentChat?.receiver?.profile?.profileImageURL
                           : "/assets/images/png/blank-profile-avatar.png"
                       }
                     />

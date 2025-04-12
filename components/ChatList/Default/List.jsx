@@ -110,7 +110,8 @@ const List = () => {
                                     }
                                     src={
                                       chat?.receiver?.profile?.profileImageURL
-                                        ? `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${chat?.receiver?.profile?.profileImageURL}`
+                                        ? chat?.receiver?.profile
+                                            ?.profileImageURL
                                         : "/assets/images/png/blank-profile-avatar.png"
                                     }
                                   />

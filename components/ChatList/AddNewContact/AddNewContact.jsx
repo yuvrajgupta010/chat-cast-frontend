@@ -86,8 +86,6 @@ const AddNewContact = () => {
     }
   };
 
-  const profileImageURL = contact?.profile?.profileImageURL;
-
   return (
     <div
       className="card mb-0 overflow-auto br-0"
@@ -115,6 +113,7 @@ const AddNewContact = () => {
             <Card.Body className="pt-0  border-0">
               <ul className="main-chat-list tab-pane h-auto">
                 {searchContacts.map((contact) => {
+                  const profileImageURL = contact?.profile?.profileImageURL;
                   return (
                     <li
                       className="media new border-0 px-2"
@@ -134,9 +133,7 @@ const AddNewContact = () => {
                           }
                           src={
                             profileImageURL
-                              ? userDetails?.accountAuthType === "google"
-                                ? profileImageURL
-                                : `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${profileImageURL}`
+                              ? profileImageURL
                               : "/assets/images/png/blank-profile-avatar.png"
                           }
                         />

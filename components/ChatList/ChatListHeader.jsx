@@ -74,9 +74,7 @@ const ChatListHeader = () => {
                 }
                 src={
                   profileImageURL
-                    ? userDetails?.accountAuthType === "google"
-                      ? profileImageURL
-                      : `${appConstants.AWS_S3_PUBLIC_BUCKET_URL}/${profileImageURL}`
+                    ? profileImageURL
                     : "/assets/images/png/blank-profile-avatar.png"
                 }
               />
