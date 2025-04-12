@@ -59,7 +59,7 @@ const Register = () => {
       <Seo title="Sign up" />
 
       {/* <!-- CONTAINER OPEN --> */}
-      <Col className="col-login mx-auto mt-7">
+      <Col className="col-login mx-auto">
         <div className="text-center">
           <Link href={"/"}>
             <Image
