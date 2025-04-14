@@ -3,6 +3,7 @@ import { Card, Spinner } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
+import { LinkedinShareButton } from "react-share";
 
 import SearchBar from "../Default/SearchBar";
 import { searchUsers } from "@/store/user/action";
@@ -162,10 +163,15 @@ const AddNewContact = () => {
               <p className="fs-7 text-primary">
                 No relevent user found with this email and name.
               </p>
-              <button className="btn btn-outline-primary">
-                {/* TODO: Add share functionality to user app on social media */}
-                Let&apos;s Invite +
-              </button>
+              <LinkedinShareButton
+                url={"http://chat-cast.personal.yuvrajgupta.in"}
+                htmlTitle="Spread the Word: ChatCast on LinkedIn"
+                title="Discover a Smarter, Safer Way to Connect with ChatCast"
+              >
+                <button className="btn btn-outline-primary">
+                  Share the Magic on LinkedIn ✨
+                </button>
+              </LinkedinShareButton>
             </div>
           ) : null}
         </Card>

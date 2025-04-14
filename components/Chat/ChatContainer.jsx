@@ -87,7 +87,7 @@ const ChatContainer = (props) => {
 
   return (
     <div
-      className="card mb-0 overflow-auto br-0 bg-transparent"
+      className="card mb-0 overflow-auto br-0 bg-transparent h-100"
       style={{ flex: 1, boxShadow: "none" }}
     >
       <Card

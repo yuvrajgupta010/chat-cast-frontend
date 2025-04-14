@@ -218,215 +218,216 @@ const Profile = () => {
   const profileImageURL = userDetails?.profile?.profileImageURL;
 
   return (
-    <Card
-      className="br-0 overflow-hidden p-0 m-0"
-      style={{ boxShadow: "none", flex: 1 }}
+    <div
+      className="card mb-0 overflow-auto br-0"
+      style={{ flex: 1, boxShadow: "none" }}
+      // style={{ boxShadow: "none", flex: "0.5 1 0" }}
     >
-      <PerfectScrollbar>
-        <Card.Body>
-          <div className="text-center chat-image mb-5">
-            <div className="avatar avatar-xxl brround cover-image bg-transparent">
-              <Image
-                // width={50}
-                // height={50}
-                fill
-                className="brround cover-image"
-                style={{
-                  opacity: isProfilePictureUpdating ? 0.5 : 1,
-                }}
-                alt={
-                  profileImageURL
-                    ? `Your photo as ${userDetails?.profile?.fullName}`
-                    : "Blank profile avatar"
-                }
-                src={
-                  profileImageURL
-                    ? profileImageURL
-                    : "/assets/images/png/blank-profile-avatar.png"
-                }
-              />
-              {isProfilePictureUpdating ? (
-                <Spinner animation="border" size="sm" variant="primary" />
-              ) : null}
+      {/* <PerfectScrollbar> */}
+      <Card.Body className="mb-0 br-0 h-100">
+        <div className="text-center chat-image mb-5">
+          <div className="avatar avatar-xxl brround cover-image bg-transparent">
+            <Image
+              // width={50}
+              // height={50}
+              fill
+              className="brround cover-image"
+              style={{
+                opacity: isProfilePictureUpdating ? 0.5 : 1,
+              }}
+              alt={
+                profileImageURL
+                  ? `Your photo as ${userDetails?.profile?.fullName}`
+                  : "Blank profile avatar"
+              }
+              src={
+                profileImageURL
+                  ? profileImageURL
+                  : "/assets/images/png/blank-profile-avatar.png"
+              }
+            />
+            {isProfilePictureUpdating ? (
+              <Spinner animation="border" size="sm" variant="primary" />
+            ) : null}
 
-              <input
-                type="file"
-                id="file-input"
-                className="d-none"
-                accept=".jpg,.jpeg,.png,.webp"
-                onInput={onFileInput}
-              />
-              <label htmlFor="file-input" style={{ cursor: "pointer" }}>
-                <span className="badge rounded-pill avatar-icons bg-primary">
-                  <i className="fe fe-camera fs-12"></i>
-                </span>
-              </label>
-            </div>
+            <input
+              type="file"
+              id="file-input"
+              className="d-none"
+              accept=".jpg,.jpeg,.png,.webp"
+              onInput={onFileInput}
+            />
+            <label htmlFor="file-input" style={{ cursor: "pointer" }}>
+              <span className="badge rounded-pill avatar-icons bg-primary">
+                <i className="fe fe-camera fs-12"></i>
+              </span>
+            </label>
           </div>
+        </div>
 
-          <Form.Group>
-            <div className="d-flex align-items-center gap-1">
-              <Form.Label htmlFor="exampleInputname" className="">
-                Full Name{" "}
-              </Form.Label>
-              {!isFullNameEditable ? (
-                <span
-                  style={{ cursor: "pointer" }}
+        <Form.Group>
+          <div className="d-flex align-items-center gap-1">
+            <Form.Label htmlFor="exampleInputname" className="">
+              Full Name{" "}
+            </Form.Label>
+            {!isFullNameEditable ? (
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={changeEditState(setIsFullNameEditable)}
+              >
+                <i className="fe fe-edit-3 text-primary mx-2"></i>
+              </span>
+            ) : null}
+          </div>
+          {isFullNameEditable ? (
+            <>
+              <Form.Control
+                type="text"
+                name="fullName"
+                id="fullName"
+                placeholder="Full Name"
+                value={newFullName}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSaveFullName();
+                  }
+                }}
+                onChange={updateProfileChangeHandler(setNewFullName)}
+              />
+              <div className="text-end py-2">
+                <button
+                  className="btn btn-primary me-2"
+                  onClick={handleSaveFullName}
+                  disabled={isFullNameSubmitting}
+                >
+                  {isFullNameSubmitting ? "Saving..." : "Save"}
+                </button>
+                <button
+                  className="btn btn-danger"
                   onClick={changeEditState(setIsFullNameEditable)}
                 >
-                  <i className="fe fe-edit-3 text-primary mx-2"></i>
-                </span>
-              ) : null}
-            </div>
-            {isFullNameEditable ? (
-              <>
-                <Form.Control
-                  type="text"
-                  name="fullName"
-                  id="fullName"
-                  placeholder="Full Name"
-                  value={newFullName}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSaveFullName();
-                    }
-                  }}
-                  onChange={updateProfileChangeHandler(setNewFullName)}
-                />
-                <div className="text-end py-2">
-                  <button
-                    className="btn btn-primary me-2"
-                    onClick={handleSaveFullName}
-                    disabled={isFullNameSubmitting}
-                  >
-                    {isFullNameSubmitting ? "Saving..." : "Save"}
-                  </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={changeEditState(setIsFullNameEditable)}
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </>
-            ) : (
-              <p className="text-primary fs-6 px-2">{fullName}</p>
-            )}
-          </Form.Group>
-          <Form.Group>
+                  Cancel
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="text-primary fs-6 px-2">{fullName}</p>
+          )}
+        </Form.Group>
+        <Form.Group>
+          <Form.Label htmlFor="exampleInputname" className="">
+            Email{" "}
+          </Form.Label>
+          <p className="text-primary fs-6 px-2">{userDetails.email}</p>
+        </Form.Group>
+        <Form.Group>
+          <div className="d-flex align-items-center gap-1">
             <Form.Label htmlFor="exampleInputname" className="">
-              Email{" "}
+              About{" "}
             </Form.Label>
-            <p className="text-primary fs-6 px-2">{userDetails.email}</p>
-          </Form.Group>
-          <Form.Group>
-            <div className="d-flex align-items-center gap-1">
-              <Form.Label htmlFor="exampleInputname" className="">
-                About{" "}
-              </Form.Label>
-              {!isAboutEditable ? (
-                <span
-                  style={{ cursor: "pointer" }}
+            {!isAboutEditable ? (
+              <span
+                style={{ cursor: "pointer" }}
+                onClick={changeEditState(setIsAboutEditable)}
+              >
+                <i className="fe fe-edit-3 text-primary mx-2"></i>
+              </span>
+            ) : null}
+          </div>
+          {isAboutEditable ? (
+            <>
+              <input
+                name="about"
+                type="text"
+                className="form-control mb-4 "
+                placeholder="I am chating on Chat Cast"
+                value={newAbout}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSaveAbout();
+                  }
+                }}
+                onChange={updateProfileChangeHandler(setNewAbout)}
+                rows={3}
+              ></input>
+              <div className="text-end py-2">
+                <button
+                  className="btn btn-primary me-2"
+                  onClick={handleSaveAbout}
+                  disabled={isAboutSubmitting}
+                >
+                  {isAboutSubmitting ? "Saving..." : "Save"}
+                </button>
+                <button
+                  className="btn btn-danger"
                   onClick={changeEditState(setIsAboutEditable)}
                 >
-                  <i className="fe fe-edit-3 text-primary mx-2"></i>
-                </span>
-              ) : null}
-            </div>
-            {isAboutEditable ? (
-              <>
-                <input
-                  name="about"
-                  type="text"
-                  className="form-control mb-4 "
-                  placeholder="I am chating on Chat Cast"
-                  value={newAbout}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSaveAbout();
-                    }
-                  }}
-                  onChange={updateProfileChangeHandler(setNewAbout)}
-                  rows={3}
-                ></input>
-                <div className="text-end py-2">
+                  Cancel
+                </button>
+              </div>
+            </>
+          ) : (
+            <p className="text-primary fs-6 px-2">{about}</p>
+          )}
+        </Form.Group>
+
+        <Accordion defaultActiveKey="1" className="mt-6">
+          <Accordion.Item eventKey="0">
+            <Accordion.Header>Update Password</Accordion.Header>
+            <Accordion.Body>
+              <form onSubmit={handleSubmit}>
+                <PasswordField
+                  label={"Current Password"}
+                  placeholder="Current Password"
+                  name={"currentPassword"}
+                  value={values.currentPassword}
+                  changeHandler={handleChange}
+                  blurHandler={handleBlur}
+                />
+                {touched.currentPassword && errors.currentPassword ? (
+                  <p className="text-danger">{errors.currentPassword}</p>
+                ) : null}
+                <PasswordField
+                  label={"New Password"}
+                  placeholder="New Password"
+                  name={"newPassword"}
+                  value={values.newPassword}
+                  changeHandler={handleChange}
+                  blurHandler={handleBlur}
+                />
+                {touched.newPassword && errors.newPassword ? (
+                  <p className="text-danger">{errors.newPassword}</p>
+                ) : null}
+                <PasswordField
+                  label={"Confirm Password"}
+                  placeholder="Confirm Password"
+                  name={"confirmPassword"}
+                  value={values.confirmPassword}
+                  changeHandler={handleChange}
+                  blurHandler={handleBlur}
+                />
+                {touched.confirmPassword && errors.confirmPassword ? (
+                  <p className="text-danger">{errors.confirmPassword}</p>
+                ) : null}
+                <div className="text-end">
                   <button
                     className="btn btn-primary me-2"
-                    onClick={handleSaveAbout}
-                    disabled={isAboutSubmitting}
+                    type="submit"
+                    disabled={isPasswordSubmitting}
                   >
-                    {isAboutSubmitting ? "Saving..." : "Save"}
+                    {isPasswordSubmitting ? "Updating..." : "Update"}
                   </button>
-                  <button
-                    className="btn btn-danger"
-                    onClick={changeEditState(setIsAboutEditable)}
-                  >
+                  <button className="btn btn-danger" onClick={handleReset}>
                     Cancel
                   </button>
                 </div>
-              </>
-            ) : (
-              <p className="text-primary fs-6 px-2">{about}</p>
-            )}
-          </Form.Group>
-
-          <Accordion defaultActiveKey="1" className="mt-6">
-            <Accordion.Item eventKey="0">
-              <Accordion.Header>Update Password</Accordion.Header>
-              <Accordion.Body>
-                <form onSubmit={handleSubmit}>
-                  <PasswordField
-                    label={"Current Password"}
-                    placeholder="Current Password"
-                    name={"currentPassword"}
-                    value={values.currentPassword}
-                    changeHandler={handleChange}
-                    blurHandler={handleBlur}
-                  />
-                  {touched.currentPassword && errors.currentPassword ? (
-                    <p className="text-danger">{errors.currentPassword}</p>
-                  ) : null}
-                  <PasswordField
-                    label={"New Password"}
-                    placeholder="New Password"
-                    name={"newPassword"}
-                    value={values.newPassword}
-                    changeHandler={handleChange}
-                    blurHandler={handleBlur}
-                  />
-                  {touched.newPassword && errors.newPassword ? (
-                    <p className="text-danger">{errors.newPassword}</p>
-                  ) : null}
-                  <PasswordField
-                    label={"Confirm Password"}
-                    placeholder="Confirm Password"
-                    name={"confirmPassword"}
-                    value={values.confirmPassword}
-                    changeHandler={handleChange}
-                    blurHandler={handleBlur}
-                  />
-                  {touched.confirmPassword && errors.confirmPassword ? (
-                    <p className="text-danger">{errors.confirmPassword}</p>
-                  ) : null}
-                  <div className="text-end">
-                    <button
-                      className="btn btn-primary me-2"
-                      type="submit"
-                      disabled={isPasswordSubmitting}
-                    >
-                      {isPasswordSubmitting ? "Updating..." : "Update"}
-                    </button>
-                    <button className="btn btn-danger" onClick={handleReset}>
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              </Accordion.Body>
-            </Accordion.Item>
-          </Accordion>
-        </Card.Body>
-      </PerfectScrollbar>
-    </Card>
+              </form>
+            </Accordion.Body>
+          </Accordion.Item>
+        </Accordion>
+      </Card.Body>
+      {/* </PerfectScrollbar> */}
+    </div>
   );
 };
 
