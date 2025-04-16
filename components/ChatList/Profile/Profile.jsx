@@ -371,60 +371,62 @@ const Profile = () => {
           )}
         </Form.Group>
 
-        <Accordion defaultActiveKey="1" className="mt-6">
-          <Accordion.Item eventKey="0">
-            <Accordion.Header>Update Password</Accordion.Header>
-            <Accordion.Body>
-              <form onSubmit={handleSubmit}>
-                <PasswordField
-                  label={"Current Password"}
-                  placeholder="Current Password"
-                  name={"currentPassword"}
-                  value={values.currentPassword}
-                  changeHandler={handleChange}
-                  blurHandler={handleBlur}
-                />
-                {touched.currentPassword && errors.currentPassword ? (
-                  <p className="text-danger">{errors.currentPassword}</p>
-                ) : null}
-                <PasswordField
-                  label={"New Password"}
-                  placeholder="New Password"
-                  name={"newPassword"}
-                  value={values.newPassword}
-                  changeHandler={handleChange}
-                  blurHandler={handleBlur}
-                />
-                {touched.newPassword && errors.newPassword ? (
-                  <p className="text-danger">{errors.newPassword}</p>
-                ) : null}
-                <PasswordField
-                  label={"Confirm Password"}
-                  placeholder="Confirm Password"
-                  name={"confirmPassword"}
-                  value={values.confirmPassword}
-                  changeHandler={handleChange}
-                  blurHandler={handleBlur}
-                />
-                {touched.confirmPassword && errors.confirmPassword ? (
-                  <p className="text-danger">{errors.confirmPassword}</p>
-                ) : null}
-                <div className="text-end">
-                  <button
-                    className="btn btn-primary me-2"
-                    type="submit"
-                    disabled={isPasswordSubmitting}
-                  >
-                    {isPasswordSubmitting ? "Updating..." : "Update"}
-                  </button>
-                  <button className="btn btn-danger" onClick={handleReset}>
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            </Accordion.Body>
-          </Accordion.Item>
-        </Accordion>
+        {userDetails.accountAuthType === "google" ? (
+          <Accordion defaultActiveKey="1" className="mt-6">
+            <Accordion.Item eventKey="0">
+              <Accordion.Header>Update Password</Accordion.Header>
+              <Accordion.Body>
+                <form onSubmit={handleSubmit}>
+                  <PasswordField
+                    label={"Current Password"}
+                    placeholder="Current Password"
+                    name={"currentPassword"}
+                    value={values.currentPassword}
+                    changeHandler={handleChange}
+                    blurHandler={handleBlur}
+                  />
+                  {touched.currentPassword && errors.currentPassword ? (
+                    <p className="text-danger">{errors.currentPassword}</p>
+                  ) : null}
+                  <PasswordField
+                    label={"New Password"}
+                    placeholder="New Password"
+                    name={"newPassword"}
+                    value={values.newPassword}
+                    changeHandler={handleChange}
+                    blurHandler={handleBlur}
+                  />
+                  {touched.newPassword && errors.newPassword ? (
+                    <p className="text-danger">{errors.newPassword}</p>
+                  ) : null}
+                  <PasswordField
+                    label={"Confirm Password"}
+                    placeholder="Confirm Password"
+                    name={"confirmPassword"}
+                    value={values.confirmPassword}
+                    changeHandler={handleChange}
+                    blurHandler={handleBlur}
+                  />
+                  {touched.confirmPassword && errors.confirmPassword ? (
+                    <p className="text-danger">{errors.confirmPassword}</p>
+                  ) : null}
+                  <div className="text-end">
+                    <button
+                      className="btn btn-primary me-2"
+                      type="submit"
+                      disabled={isPasswordSubmitting}
+                    >
+                      {isPasswordSubmitting ? "Updating..." : "Update"}
+                    </button>
+                    <button className="btn btn-danger" onClick={handleReset}>
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
+        ) : null}
       </Card.Body>
       {/* </PerfectScrollbar> */}
     </div>
