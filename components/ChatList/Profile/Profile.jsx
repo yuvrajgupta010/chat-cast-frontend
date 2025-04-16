@@ -371,7 +371,7 @@ const Profile = () => {
           )}
         </Form.Group>
 
-        {userDetails.accountAuthType === "google" ? (
+        {!userDetails?.accountAuthType === "google" ? (
           <Accordion defaultActiveKey="1" className="mt-6">
             <Accordion.Item eventKey="0">
               <Accordion.Header>Update Password</Accordion.Header>
