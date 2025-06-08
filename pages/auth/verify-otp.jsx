@@ -235,26 +235,6 @@ const VerifyOtp = () => {
                 </Link>
               </p>
             </div>
-            <label className="login-social-icon">
-              <span>OR</span>
-            </label>
-            <div className="d-flex justify-content-center">
-              <span className="text-primary">
-                <div className="social-login me-4 text-center">
-                  <i className="fa fa-google"></i>
-                </div>
-              </span>
-              <span className="text-primary">
-                <div className="social-login me-4 text-center">
-                  <i className="fa fa-facebook"></i>
-                </div>
-              </span>
-              <span className="text-primary">
-                <div className="social-login text-center">
-                  <i className="fa fa-twitter"></i>
-                </div>
-              </span>
-            </div>
           </form>
         </div>
       </div>
