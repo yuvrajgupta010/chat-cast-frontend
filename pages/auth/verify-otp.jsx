@@ -75,18 +75,9 @@ const VerifyOtp = () => {
 
   const resendOTPHandler = useCallback(async () => {
     try {
-      const forgetToken = localStorage.getItem("forgetToken");
-      if (!forgetToken) {
-        // TODO: handle forgetToken on refresh
-        router.push("/auth/forget-password");
-        throw new Error("Something went wrong!");
-      }
-      const response = await dispatch(
-        getNewForgetOtp({ forgetToken })
-      ).unwrap();
+      const response = await dispatch(getNewForgetOtp()).unwrap();
       if (response) {
         if (response.status === 201) {
-          localStorage.setItem("forgetToken", response.data.data.forgetToken);
           toast.success(response?.data?.message);
         } else {
           throw new Error(response?.data?.message);
@@ -95,7 +86,7 @@ const VerifyOtp = () => {
     } catch (error) {
       toast.error(error.message);
     }
-  }, [dispatch, router]);
+  }, [dispatch]);
 
   const otpShowHandler = () => setIsOtpShown((prev) => !prev);
   const passwordShowHandler = () => setIsPasswordShown((prev) => !prev);
