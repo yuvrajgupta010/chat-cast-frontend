@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { getChatMessages } from "./action";
-import appConstants from "@/helper/constant";
 
 const initialState = {
   chatRoomId: undefined,

@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback, useContext } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { authStatus } from "@/store/auth/verify/action";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 
 export const AuthCTX = React.createContext({
   userDetails: null,
