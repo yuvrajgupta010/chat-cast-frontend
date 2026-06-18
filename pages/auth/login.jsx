@@ -10,9 +10,8 @@ import { toast } from "react-toastify";
 import Seo from "@/shared/layout-components/seo/seo";
 import loginFormValidation from "@/helper/yup/login";
 import { loginUser } from "@/store/auth/login/action";
-import { AuthCTX, useAuthCtx } from "@/context/AuthCTX";
+import { useAuthCtx } from "@/context/AuthCTX";
 import { BASE_URL } from "@/service/restfulUrls";
-import { googleAuthPage } from "@/helper/sharedFunction";
 
 const Login = () => {
   const [isPasswordShown, setIsPasswordShown] = useState(false);

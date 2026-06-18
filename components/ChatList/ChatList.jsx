@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ChatListHeader from "./ChatListHeader";
-import SearchBar from "./Default/SearchBar";
 import List from "./Default/List";
 import AddNewContact from "./AddNewContact/AddNewContact";
 import Profile from "./Profile/Profile";

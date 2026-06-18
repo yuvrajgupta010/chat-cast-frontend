@@ -1,6 +1,5 @@
 import React from "react";
 import Plans from "./Plans";
-import Payment from "./Payment";
 
 const PurchasePlan = () => {
   return (

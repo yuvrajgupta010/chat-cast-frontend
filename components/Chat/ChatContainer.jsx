@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Card } from "react-bootstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import Link from "next/link";
 import Image from "next/image";
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import style from "./Chatcontainer.module.css";
 import MessageStatus from "../UI/MessageStatus";
 import { useAuthCtx } from "@/context/AuthCTX";
-import appConstants from "@/helper/constant";
 import { getDownloadFileUrl } from "@/store/chat/action";
 
 const ChatContainer = (props) => {

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Accordion, Card, Form, Spinner } from "react-bootstrap";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import Image from "next/image";
 import { toast } from "react-toastify";
@@ -10,7 +9,6 @@ import axios from "axios";
 
 import PasswordField from "@/components/UI/PasswordField";
 import { useAuthCtx } from "@/context/AuthCTX";
-import appConstants from "@/helper/constant";
 import { getProfilePictureUploadUrl, profileUpdate } from "@/store/user/action";
 import changePasswordVaildation from "@/helper/yup/profile";
 

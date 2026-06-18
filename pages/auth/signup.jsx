@@ -10,7 +10,6 @@ import { toast } from "react-toastify";
 import Seo from "@/shared/layout-components/seo/seo";
 import sigupFormValidation from "@/helper/yup/signup";
 import { createAccount } from "@/store/auth/signup/action";
-import { googleAuthPage } from "@/helper/sharedFunction";
 import { BASE_URL } from "@/service/restfulUrls";
 
 const Register = () => {

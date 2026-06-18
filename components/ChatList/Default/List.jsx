@@ -7,14 +7,11 @@ import {
   Tab,
   Tooltip,
 } from "react-bootstrap";
-import PerfectScrollbar from "react-perfect-scrollbar";
 import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import Image from "next/image";
 
 import MessageStatus from "../../UI/MessageStatus";
-import SearchBar from "./SearchBar";
-import appConstants from "@/helper/constant";
 import { useAuthCtx } from "@/context/AuthCTX";
 import { currentChatAction } from "@/store/chatApp/reducer";
 import { selectChatRoomAndUserAction } from "@/store/chat/reducer";

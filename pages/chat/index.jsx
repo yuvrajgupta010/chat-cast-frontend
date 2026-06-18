@@ -7,7 +7,6 @@ import io from "socket.io-client";
 import Seo from "@/shared/layout-components/seo/seo";
 import Empty from "@/components/Empty";
 import ChatBox from "@/components/Chat/ChatBox";
-import PurchasePlan from "@/components/PurchasePlan/PurchasePlan";
 import ChatList from "@/components/ChatList/ChatList";
 import { useAuthCtx } from "@/context/AuthCTX";
 import { getUserChatList } from "@/store/chatApp/action";

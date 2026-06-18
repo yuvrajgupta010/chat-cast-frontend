@@ -9,7 +9,6 @@ import { toast } from "react-toastify";
 
 import Seo from "@/shared/layout-components/seo/seo";
 import forgetFormValidation from "@/helper/yup/forget-password";
-import { forgetPassword } from "@/store/auth/forget-password/action";
 import { resendVerificationOtp } from "@/store/auth/verify/action";
 
 const ForgotPassword = () => {

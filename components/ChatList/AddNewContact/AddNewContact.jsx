@@ -7,7 +7,6 @@ import { LinkedinShareButton } from "react-share";
 
 import SearchBar from "../Default/SearchBar";
 import { searchUsers } from "@/store/user/action";
-import appConstants from "@/helper/constant";
 import { currentChatAction } from "@/store/chatApp/reducer";
 import { selectChatRoomAndUserAction } from "@/store/chat/reducer";
 import { useAuthCtx } from "@/context/AuthCTX";

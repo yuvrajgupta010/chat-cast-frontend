@@ -1,0 +1,17 @@
+// .eslintrc.js
+module.exports = {
+  extends: ["next/core-web-vitals"],
+  plugins: ["unused-imports"],
+  rules: {
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      {
+        vars: "all",
+        varsIgnorePattern: "^_",
+        args: "after-used",
+        argsIgnorePattern: "^_",
+      },
+    ],
+  },
+};

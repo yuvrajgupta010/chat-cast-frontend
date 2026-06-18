@@ -1,9 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { Card, Dropdown, Nav } from "react-bootstrap";
-import { useSelector } from "react-redux";
 
-import appConstants from "@/helper/constant";
 import { useAuthCtx } from "@/context/AuthCTX";
 
 const ChatHeader = (props) => {
